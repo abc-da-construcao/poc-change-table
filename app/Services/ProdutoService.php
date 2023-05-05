@@ -165,7 +165,6 @@ class ProdutoService {
      * inserir/update os dados de produto
      */
     public static function flushProdutoComplemento($dados) {
-
         Produto::upsert($dados, ['codpro', 'dv', 'id_fornecedor'],
                 [
                     "codpro",
@@ -186,13 +185,13 @@ class ProdutoService {
      */
     public static function flushProdutoPesquisa($dados) {
 
-        Produto::upsert($dados, ['codpro', 'dv', 'oid_pesquisa', 'codigo_externo_pesquisa'],
+        Produto::upsert($dados, ['codigo_externo_pesquisa'],
                 [
                     "codpro",
                     "dv",
-                    "cod_interno_produtocad",
                     "codigo_externo_pesquisa",
                     "oid_pesquisa",
+                    "cod_interno_produtocad",
                     "operation",
                     "valor_custo",
                     "valor_subst_nf",
@@ -262,13 +261,11 @@ class ProdutoService {
                             WHEN 'I' THEN 'ISENTO' ------- ISENTO -----
                         END AS 'tributacao_mg',
                         CASE
-                            WHEN pro.origem IN ('N',
-                                                'M',
-                                                'L') THEN 'N'
-                            WHEN pro.origem IN ('I',
-                                                'G',
-                                                'H') THEN 'I'
-                        END AS 'origem',
+                            WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'Nacional'
+                            WHEN pro.origem IN ('I', 'G', 'H')              THEN 'Importado'
+                            WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'Nacional'
+                        WHEN pro.origem in ('1', '2', '6' , '7')            THEN 'Importado'        
+                       END AS 'origem',
                         RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
                     FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
@@ -297,7 +294,8 @@ class ProdutoService {
                         CONCAT(cmp.CODPROFABRICANTE, '') AS 'codpro_fabricante',
                         cmp.alturacm AS 'altura',
                         cmp.larguracm AS 'largura',
-                        cmp.comprimentocm AS 'comprimento'
+                        cmp.comprimentocm AS 'comprimento',
+                        ct.SYS_CHANGE_OPERATION AS 'operation'
                     FROM CHANGETABLE (CHANGES [COMPLEMENTOPRODUTO], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro
                     INNER JOIN complementoproduto cmp ON pro.codpro = cmp.codpro"
@@ -327,7 +325,8 @@ class ProdutoService {
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23160' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'icms_sem_despesas_nao_inclusas'
                     FROM CHANGETABLE (CHANGES [PESQUISA], :lastVersion) AS ct
                     INNER JOIN PESQUISA pq on pq.OID  = ct.oid
-                    INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO"
+                    INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO
+                    WHERE criadoem = (SELECT TOP(1) ps.criadoem FROM PESQUISA ps  WHERE ps.codigoexterno = pro.codpro ORDER BY ps.criadoem DESC)"
                     ,['lastVersion' => $lastVersionProdutoComplemento]);
 
         return json_decode(json_encode($dados), true);
