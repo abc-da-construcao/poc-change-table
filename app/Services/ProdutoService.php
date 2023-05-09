@@ -126,7 +126,7 @@ class ProdutoService {
                     "operation",
                     "referencia",
                     "nome_original",
-                    "ncm",change_tracking_produto
+                    "ncm",
                     "modelo",
                     "venda_minima",
                     "codpro_fabricante",
