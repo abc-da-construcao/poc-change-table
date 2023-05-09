@@ -126,7 +126,7 @@ class ProdutoService {
                     "operation",
                     "referencia",
                     "nome_original",
-                    "ncm",
+                    "ncm",change_tracking_produto
                     "modelo",
                     "venda_minima",
                     "codpro_fabricante",
@@ -261,11 +261,11 @@ class ProdutoService {
                             WHEN 'I' THEN 'ISENTO' ------- ISENTO -----
                         END AS 'tributacao_mg',
                         CASE
-                            WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'Nacional'
-                            WHEN pro.origem IN ('I', 'G', 'H')              THEN 'Importado'
-                            WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'Nacional'
-                        WHEN pro.origem in ('1', '2', '6' , '7')            THEN 'Importado'        
-                       END AS 'origem',
+                            WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'N'
+                            WHEN pro.origem IN ('I', 'G', 'H')              THEN 'I'
+                            WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'N'
+                            WHEN pro.origem in ('1', '2', '6' , '7')        THEN 'I'
+                            END AS 'origem',
                         RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
                     FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
