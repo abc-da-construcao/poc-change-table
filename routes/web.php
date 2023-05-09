@@ -20,7 +20,7 @@ use App\Http\Controllers\ItensPedidoController;
 Route::get('/tracking-pedido', [PedidoController::class, 'index']);
 Route::get('/tracking-estoque', [EstoqueController::class, 'estoque']);
 Route::get('/tracking-produto', [ProdutoController::class, 'produto']);
-Route::get('/tracking-intens-pedido', [ItensPedidoController::class, 'itensPedido']);
+Route::get('/tracking-itens-pedido', [ItensPedidoController::class, 'itensPedido']);
 
 Route::get('/', function () {
     return view('welcome');
