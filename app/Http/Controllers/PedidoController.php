@@ -35,6 +35,8 @@ class PedidoController extends Controller {
                     ];
 
                     $enderecoCliente[$key] = [
+                        'numped' => trim($value['numped']),
+                        'filial' => trim($value['filial']),
                         'cpf_cnpj' => trim($value['cpf_cnpj']),
                         'logradouro' => trim($value['endercli']),
                         'numero' => trim($value['NumClie']),
