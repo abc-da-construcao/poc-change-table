@@ -13,8 +13,10 @@ class EnderecoClienteService {
 
         EnderecosClientes::upsert(
                 $dados,
-                ['cpf_cnpj', 'cep', 'numero'],
+                ['numped', 'filial', 'cpf_cnpj'],
                 [
+                    "numped",
+                    "filial",
                     "cpf_cnpj",
                     "logradouro",
                     "numero",
