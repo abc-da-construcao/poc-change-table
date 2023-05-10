@@ -14,20 +14,18 @@ return new class extends Migration {
     public function up() {
         Schema::create('enderecos_clientes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('numped');
-            $table->string('filial', 2);
             $table->string('cpf_cnpj', 18);
-            $table->string('logradouro', 150);
-            $table->string('numero', 50);
-            $table->string('bairro', 50);
-            $table->string('cidade', 150);
-            $table->string('cep', 8);
-            $table->string('uf', 2);
-            $table->string('complemento', 150);
-            $table->string('contato', 150)->nullable(true);
+            $table->string('logradouro', 254)->nullable(true);
+            $table->string('numero', 254)->nullable(true);
+            $table->string('bairro', 254)->nullable(true);
+            $table->string('cidade', 254)->nullable(true);
+            $table->string('cep', 8)->nullable(true);
+            $table->string('uf', 2)->nullable(true);
+            $table->string('complemento', 254)->nullable(true);
+            $table->string('contato', 254)->nullable(true);
             $table->timestamps();
             //unique
-            $table->unique(['numped', 'filial', 'cpf_cnpj']);
+            $table->unique(['cpf_cnpj','cep','numero']);
         });
     }
 

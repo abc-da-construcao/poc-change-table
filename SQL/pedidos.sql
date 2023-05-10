@@ -126,7 +126,7 @@ SELECT
     lower((select top 1 co.VALOR 
               from COMUNICACAO_V co 
               where co.RITEM = cli.oid and 
-                   co.RTIPO = :rtipo)) as email_cliente
+                   co.RTIPO = 32979)) as email_cliente
 FROM CHANGETABLE (CHANGES [PEDICLICAD], :lastVersion) AS c
 JOIN PEDICLICAD p on p.numped = c.numped
 JOIN clientecad cli on cli.oid = p.codclie

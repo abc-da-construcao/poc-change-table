@@ -1,6 +1,5 @@
 -- busca produtos que sofreram alterações na tabela PRODUTOCAD
 SELECT
-TOP 100
     Pro.Codpro AS 'codpro',
     ct.dv AS 'dv',
     ct.SYS_CHANGE_OPERATION AS 'operation',

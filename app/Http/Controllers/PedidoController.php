@@ -35,8 +35,6 @@ class PedidoController extends Controller {
                     ];
 
                     $enderecoCliente[$key] = [
-                        'numped' => trim($value['numped']),
-                        'filial' => trim($value['filial']),
                         'cpf_cnpj' => trim($value['cpf_cnpj']),
                         'logradouro' => trim($value['endercli']),
                         'numero' => trim($value['NumClie']),
@@ -51,18 +49,7 @@ class PedidoController extends Controller {
                     //remover os campos que não existem na tabela de pedido
                     unset($chunk[$key]['nome_cliente']);
                     unset($chunk[$key]['email_cliente']);
-                    unset($chunk[$key]['razaocli']);
-                    unset($chunk[$key]['inscli']);
-                    unset($chunk[$key]['telecli']);
-                    //--
-                    unset($chunk[$key]['endercli']);
-                    unset($chunk[$key]['NumClie']);
-                    unset($chunk[$key]['bairrcli']);
-                    unset($chunk[$key]['cidadcli']);
-                    unset($chunk[$key]['cepcli']);
-                    unset($chunk[$key]['estcli']);
-                    unset($chunk[$key]['COMPLCLI']);
-                    unset($chunk[$key]['contato']);
+
                 }//FIM FOREACH CHUNCK INTERNO
 
                 /* add/update na tabela "espelho" */
