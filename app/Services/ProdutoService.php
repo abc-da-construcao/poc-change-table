@@ -53,6 +53,20 @@ class ProdutoService {
     }
 
     /**
+     * retorna o ultimo valor q ainda não foi executado em busca dos trackings
+     */
+    public static function getLastVersionClassifCadControle() {
+        $lastVersion = Configuracoes::where('nome', 'change_tracking_produto_classifCad')->first();
+
+        //ainda não tem versao na tabela de controle
+        if (empty($lastVersion)) {
+            $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
+            return $version->version;
+        }
+        return $lastVersion->valor;
+    }
+
+    /**
      * retorna o ultimo tracking para a proximo controle interno da execuçao
      */
     public static function getLastVersionTrackingTable() {
@@ -107,6 +121,24 @@ class ProdutoService {
         if (empty($LastVersionTable)) {
             $LastVersionTable = new Configuracoes();
             $LastVersionTable->nome = 'change_tracking_produto_pesquisa';
+        }
+
+        $LastVersionTable->valor = $version;
+        $LastVersionTable->save();
+    }
+
+
+    /**
+     * atualiza o valor na tabela de controle
+     */
+    public static function updateLastTrackingClassifCadTable($version) {
+
+        //atualiza a ultima versao na tabela de controle
+        $LastVersionTable = Configuracoes::where('nome', 'change_tracking_produto_classifCad')->first();
+
+        if (empty($LastVersionTable)) {
+            $LastVersionTable = new Configuracoes();
+            $LastVersionTable->nome = 'change_tracking_produto_classifCad';
         }
 
         $LastVersionTable->valor = $version;
@@ -180,9 +212,9 @@ class ProdutoService {
                 ]);
     }
 
-/**
+    /**
      * inserir/update os dados de produto
-     */
+    */
     public static function flushProdutoPesquisa($dados) {
 
         Produto::upsert($dados, ['codigo_externo_pesquisa'],
@@ -199,6 +231,22 @@ class ProdutoService {
                     "perc_icms_compra",
                     "aliq_icms_compra",
                     "icms_sem_despesas_nao_inclusas"
+                ]);
+    }
+
+    /**
+     * inserir/update os dados de produto
+    */
+    public static function flushClassifCad($dados) {
+
+        Produto::upsert($dados, ['classe_produto'],
+                [
+                    "classe_produto",
+                    "descricao_classe_prod",
+                    "paga_comissao_ind_oferta",
+                    "similaridade",
+                    "IsActive",
+                    "operation"
                 ]);
     }
 
@@ -328,6 +376,35 @@ class ProdutoService {
                     INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO
                     WHERE criadoem = (SELECT TOP(1) ps.criadoem FROM PESQUISA ps  WHERE ps.codigoexterno = pro.codpro ORDER BY ps.criadoem DESC)"
                     ,['lastVersion' => $lastVersionProdutoComplemento]);
+
+        return json_decode(json_encode($dados), true);
+    }
+
+
+    /**
+     * busca as ultimas modificações de complementos do produto da tabela no ERP
+     */
+    public static function getLastChagingTrackingClassifCad($lastVersionClassifCad) {
+
+        $dados = DB::connection('sqlsrv_ERP')->select(
+                    "SELECT
+                        cc.id,
+                        cc.clasprod AS 'classe_produto',
+                        cc.descr AS 'descricao_classe_prod',
+                        CASE cc.PAGACOMISSAOINDOFERTA
+                            WHEN 1 THEN 1
+                        ELSE 0
+                        END AS 'paga_comissao_ind_oferta',
+                        cc.SIMILARIDADE AS 'similaridade', 
+                        CASE cc.ATIVA
+                            WHEN 1 THEN 1
+                        ELSE 0
+                        END AS 'IsActive',
+                        ct.SYS_CHANGE_OPERATION AS 'operation'
+                    FROM CHANGETABLE (CHANGES [CLASSIFCAD], :lastVersion) AS ct
+                    INNER JOIN CLASSIFCAD cc on cc.clasprod = ct.clasprod
+                    INNER JOIN PRODUTOCAD pro on pro.clasprod = cc.clasprod"
+                    ,['lastVersion' => $lastVersionClassifCad]);
 
         return json_decode(json_encode($dados), true);
     }
