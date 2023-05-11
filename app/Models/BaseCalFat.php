@@ -16,6 +16,6 @@ class BaseCalFat extends Model {
      *
      * @var string
      */
-    protected $table = 'baseCalFats';
+    protected $table = 'base_cal_fats';
 
 }

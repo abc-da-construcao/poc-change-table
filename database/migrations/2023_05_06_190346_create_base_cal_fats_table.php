@@ -12,7 +12,7 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('baseCalFats', function (Blueprint $table) {
+        Schema::create('base_cal_fats', function (Blueprint $table) {
                         $table->id()->unique();
                         $table->string('codpro',5);
                         $table->decimal('base_cont',9)->nullable(true);
@@ -56,7 +56,6 @@ return new class extends Migration {
                         $table->string('codigo_ce_st',14);
                         $table->string('observacao',254)->nullable(true);
                         $table->string('operation')->nullable(true);
-
                         $table->timestamps();
                         //unique
                         $table->unique(['codpro', 'id_basecalfat']);
@@ -69,6 +68,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('baseCalFats');
+        Schema::dropIfExists('base_cal_fats');
     }
 };
