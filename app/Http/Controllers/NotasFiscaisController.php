@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\NotaFiscaisService;
+use App\Services\ItensNotaFiscalService;
 
 class NotasFiscaisController extends Controller {
 
@@ -17,11 +18,29 @@ class NotasFiscaisController extends Controller {
             //busco as ultimas alteraçẽos no ERP
             $notasFiscaisERP = NotaFiscaisService::getLastChagingTrackingERP($lastVersion);
 
-            $chunks = array_chunk($notasFiscaisERP, 500);
+            $in = '';
+            $numord = [];
 
+            //upinsert nota fiscal
+            $chunks = array_chunk($notasFiscaisERP, 500);
             foreach ($chunks as $chunk) {
+                $in .= str_repeat('?,', count($chunk) - 1) . '?';
+
+                foreach ($chunk as $value) {
+                    $numord[] = $value['numord'];
+                }
                 //add/update na tabela "espelho"
                 NotaFiscaisService::flushItensPedidos($chunk);
+            }
+
+            if (count($numord) > 0) {
+                //upinsert itens da nota
+                $itensNf = ItensNotaFiscalService::getItensNF($numord, $in);
+                $chunksNF = array_chunk($itensNf, 500);
+                foreach ($chunksNF as $chunk) {
+                    //add/update na tabela "espelho"
+                    ItensNotaFiscalService::flushItensNF($chunk);
+                }
             }
 
             /* atualiza na tabela de configurações */

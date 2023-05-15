@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('numped');
             $table->string('filial', 2);
-            $table->unique(array('numped', 'filial'));
             $table->integer('codclie');
             $table->string('numorc', 5)->nullable(true);
             $table->string('codvend', 5)->nullable(true);
@@ -139,6 +138,8 @@ return new class extends Migration {
             $table->decimal('CONTRATO')->nullable(true);
             $table->decimal('EMPENHO')->nullable(true);
             $table->timestamps();
+            
+            $table->unique(array('numped', 'referencia'));
         });
     }
 
