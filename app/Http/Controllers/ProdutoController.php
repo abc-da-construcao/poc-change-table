@@ -71,26 +71,6 @@ class ProdutoController extends Controller {
             ProdutoService::updateLastTrackingProdutoPesquisaTable($updateVersionPesquisa);
 
 
-            //** *********************************************************************************************************** *//
-            //      Search for traking in table CLASSIFCAD
-            //** *********************************************************************************************************** *//
-            //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionClassifCad = ProdutoService::getLastVersionClassifCadControle();
-
-            //Busco a última versão do change tracking do SQL Server
-            $updateVersionClassifCad = ProdutoService::getLastVersionTrackingTable();
-
-            //busco as ultimas alteracoes de classes do produto no ERP
-            $dadosClassifCadTrackingERP = ProdutoService::getLastChagingTrackingClassifCad($lastVersionClassifCad);
-
-            $chunksClassifCad = array_chunk($dadosClassifCadTrackingERP, 500); // limita a carga da consulta em 500 registros por vez
-            foreach ($chunksClassifCad as $chunkClassifCad) {
-                //add/update na tabela "espelho produto"
-                ProdutoService::flushClassifCad($chunkClassifCad);
-            }
-            //atualiza na tabela de configuracoes
-            ProdutoService::updateLastTrackingClassifCadTable($updateVersionClassifCad);
-
             //print execution
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {

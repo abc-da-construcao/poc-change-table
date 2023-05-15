@@ -52,19 +52,6 @@ class ProdutoService {
         return $lastVersion->valor;
     }
 
-    /**
-     * retorna o ultimo valor q ainda não foi executado em busca dos trackings
-     */
-    public static function getLastVersionClassifCadControle() {
-        $lastVersion = Configuracoes::where('nome', 'change_tracking_produto_classifCad')->first();
-
-        //ainda não tem versao na tabela de controle
-        if (empty($lastVersion)) {
-            $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
-            return $version->version;
-        }
-        return $lastVersion->valor;
-    }
 
     /**
      * retorna o ultimo tracking para a proximo controle interno da execuçao
@@ -129,24 +116,6 @@ class ProdutoService {
 
 
     /**
-     * atualiza o valor na tabela de controle
-     */
-    public static function updateLastTrackingClassifCadTable($version) {
-
-        //atualiza a ultima versao na tabela de controle
-        $LastVersionTable = Configuracoes::where('nome', 'change_tracking_produto_classifCad')->first();
-
-        if (empty($LastVersionTable)) {
-            $LastVersionTable = new Configuracoes();
-            $LastVersionTable->nome = 'change_tracking_produto_classifCad';
-        }
-
-        $LastVersionTable->valor = $version;
-        $LastVersionTable->save();
-    }
-
-
-    /**
      * inserir/update os dados de produto
      */
     public static function flushProduto($dados) {
@@ -189,8 +158,7 @@ class ProdutoService {
                                     "codigo_mens",
                                     "tributacao_mg",
                                     "origem",
-                                    "ref_end",
-                                    "origem_traking",
+                                    "ref_end"
                                 ]);
                     }
 
@@ -234,22 +202,6 @@ class ProdutoService {
                                     "icms_sem_despesas_nao_inclusas"
                                 ]);
     }
-
-    /**
-     * inserir/update os dados de produto
-    */
-    public static function flushClassifCad($dados) {
-
-        Produto::upsert($dados, ['classe_produto'],
-                                [
-                                    "classe_produto",
-                                    "descricao_classe_prod",
-                                    "paga_comissao_ind_oferta",
-                                    "similaridade",
-                                    "IsActive",
-                                    "operation"
-                                ]);
-                    }
 
 
     /**
@@ -315,8 +267,7 @@ class ProdutoService {
                             WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'N'
                             WHEN pro.origem in ('1', '2', '6' , '7')        THEN 'I'
                             END AS 'origem',
-                        RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end',
-                        'PRODUTOCAD' AS 'origem_traking'
+                        RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
                     FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
                     INNER JOIN complementoproduto CMP ON pro.codpro = cmp.codpro
@@ -345,8 +296,7 @@ class ProdutoService {
                         cmp.alturacm AS 'altura',
                         cmp.larguracm AS 'largura',
                         cmp.comprimentocm AS 'comprimento',
-                        ct.SYS_CHANGE_OPERATION AS 'operation',
-                        'COMPLEMENTOPRODUTO' AS 'origem_traking'
+                        ct.SYS_CHANGE_OPERATION AS 'operation'
                     FROM CHANGETABLE (CHANGES [COMPLEMENTOPRODUTO], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro
                     INNER JOIN complementoproduto cmp ON pro.codpro = cmp.codpro"
@@ -374,41 +324,11 @@ class ProdutoService {
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23188' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'perc_icms_compra',
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23198' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'aliq_icms_compra',
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23160' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'icms_sem_despesas_nao_inclusas'
-                        , 'PESQUISA' AS 'origem_traking'
                     FROM CHANGETABLE (CHANGES [PESQUISA], :lastVersion) AS ct
                     INNER JOIN PESQUISA pq on pq.OID  = ct.oid
                     INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO
                     WHERE criadoem = (SELECT TOP(1) ps.criadoem FROM PESQUISA ps  WHERE ps.codigoexterno = pro.codpro ORDER BY ps.criadoem DESC)"
                     ,['lastVersion' => $lastVersionProdutoComplemento]);
-
-        return json_decode(json_encode($dados), true);
-    }
-
-
-    /**
-     * busca as ultimas modificações de complementos do produto da tabela no ERP
-     */
-    public static function getLastChagingTrackingClassifCad($lastVersionClassifCad) {
-
-        $dados = DB::connection('sqlsrv_ERP')->select(
-                    "SELECT
-                        cc.id,
-                        cc.clasprod AS 'classe_produto',
-                        cc.descr AS 'descricao_classe_prod',
-                        CASE cc.PAGACOMISSAOINDOFERTA
-                            WHEN 1 THEN 1
-                        ELSE 0
-                        END AS 'paga_comissao_ind_oferta',
-                        cc.SIMILARIDADE AS 'similaridade', 
-                        CASE cc.ATIVA
-                            WHEN 1 THEN 1
-                        ELSE 0
-                        END AS 'IsActive',
-                        ct.SYS_CHANGE_OPERATION AS 'operation'
-                    FROM CHANGETABLE (CHANGES [CLASSIFCAD], :lastVersion) AS ct
-                    INNER JOIN CLASSIFCAD cc on cc.clasprod = ct.clasprod
-                    INNER JOIN PRODUTOCAD pro on pro.clasprod = cc.clasprod"
-                    ,['lastVersion' => $lastVersionClassifCad]);
 
         return json_decode(json_encode($dados), true);
     }

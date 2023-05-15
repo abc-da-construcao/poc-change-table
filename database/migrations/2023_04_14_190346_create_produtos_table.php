@@ -60,12 +60,6 @@ return new class extends Migration {
                         $table->decimal('perc_icms_compra')->nullable(true);
                         $table->decimal('aliq_icms_compra')->nullable(true);
                         $table->decimal('icms_sem_despesas_nao_inclusas')->nullable(true);
-                        $table->string('classe_produto',14)->nullable(true);
-                        $table->string('descricao_classe_prod',25)->nullable(true);
-                        $table->integer('paga_comissao_ind_oferta')->nullable(true);
-                        $table->integer('similaridade')->nullable(true);
-                        $table->integer('IsActive')->nullable(true);
-                        $table->string('origem_traking', 254)->nullable(true);
                         $table->timestamps();
                         //unique
                         $table->unique(['codpro', 'dv', 'id_fornecedor', 'oid_pesquisa']);
