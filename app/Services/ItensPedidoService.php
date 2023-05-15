@@ -56,6 +56,7 @@ class ItensPedidoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                 'SELECT
+                    i.numped,
                     CASE
                         WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
                             THEN p.referencia
@@ -159,6 +160,7 @@ class ItensPedidoService {
 
         ItensPedido::upsert($dados, ['item', 'pedido_id'],
                 [
+                    "numped",
                     "pedido_id",
                     "codpro",
                     "dv",

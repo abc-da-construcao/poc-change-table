@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('pedido_id', 100);
             $table->integer("item");
+            $table->integer("numped");
             $table->unique(array('item', 'pedido_id'));
             
             $table->string("codpro", 5);

@@ -71,6 +71,7 @@ class PedidoService {
                     p.numord,
                     p.tpo,
                     p.filial,
+                    p.referencia,
                     CASE
                         WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
                             THEN p.referencia
@@ -216,6 +217,7 @@ class PedidoService {
                     "numord",
                     "tpo",
                     "filial",
+                    "referencia",
                     "pedido_id",
                     "moedcor",
                     "dataatu",

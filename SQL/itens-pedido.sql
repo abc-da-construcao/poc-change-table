@@ -1,5 +1,6 @@
 
 SELECT
+        i.numped,
         CASE
             WHEN (p.referencia is not null) AND (p.referencia <> '') AND (p.referencia <> ' ')  
                 THEN p.referencia
