@@ -14,9 +14,9 @@ return new class extends Migration {
     public function up() {
         Schema::create('itens_pedido', function (Blueprint $table) {
             $table->id();
-            $table->integer("numped");
+            $table->string('pedido_id', 100);
             $table->integer("item");
-            $table->unique(array('item', 'numped'));
+            $table->unique(array('item', 'pedido_id'));
             
             $table->string("codpro", 5);
             $table->string("dv", 1);

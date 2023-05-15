@@ -56,7 +56,11 @@ class ItensPedidoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                 'SELECT
-                    i.numped,
+                    CASE
+                        WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
+                            THEN p.referencia
+                        ELSE CAST(p.numped AS VARCHAR(100))
+                    END AS pedido_id,
                     i.codpro,
                     i.dv,
                     i.quant,
@@ -143,7 +147,8 @@ class ItensPedidoService {
                     i.PrecoOferta,
                     i.VALORIPITX
            FROM CHANGETABLE (CHANGES [ItemCliCad], :lastVersion) AS ct
-           JOIN ITEMCLICAD i on i.item = ct.item', ['lastVersion' => $lastVersion]);
+           JOIN ITEMCLICAD i on i.item = ct.item
+           JOIN PEDICLICAD p on p.numped = i.numped', ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
@@ -152,9 +157,9 @@ class ItensPedidoService {
      */
     public static function flushItensPedidos($dados) {
 
-        ItensPedido::upsert($dados, ['item', 'numped'],
+        ItensPedido::upsert($dados, ['item', 'pedido_id'],
                 [
-                    "numped",
+                    "pedido_id",
                     "codpro",
                     "dv",
                     "quant",
