@@ -7,6 +7,7 @@ use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\BaseCalFatController;
 use App\Http\Controllers\ItensPedidoController;
 use App\Http\Controllers\NotasFiscaisController;
+use App\Http\Controllers\ClasseProdutoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::get('/tracking-produto', [ProdutoController::class, 'produto']);
 Route::get('/tracking-basecalfat', [BaseCalFatController::class, 'basecalfat']);
 Route::get('/tracking-itens-pedido', [ItensPedidoController::class, 'itensPedido']);
 Route::get('/tracking-notas-fiscais', [NotasFiscaisController::class, 'notasFiscais']);
+Route::get('/tracking-classe', [ClasseProdutoController::class, 'classe']);
 
 Route::get('/', function () {
     return view('welcome');
