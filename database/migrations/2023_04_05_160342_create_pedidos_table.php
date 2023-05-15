@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('numped');
             $table->string('filial', 2);
+            $table->string('referencia', 100)->nullable(true);
             $table->integer('codclie');
             $table->string('numorc', 5)->nullable(true);
             $table->string('codvend', 5)->nullable(true);

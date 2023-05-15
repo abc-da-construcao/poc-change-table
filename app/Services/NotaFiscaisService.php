@@ -93,6 +93,11 @@ class NotaFiscaisService {
                     nf.ccusto,
                     nf.obs,
                     nf.codvend,
+                    CASE
+                        WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
+                            THEN p.referencia
+                        ELSE CAST(p.numped AS VARCHAR(100))
+                    END AS pedido_id,
                     nf.numped,
                     nf.valentrad,
                     nf.codmetra,
@@ -207,7 +212,8 @@ class NotaFiscaisService {
                     nf.DESPESASIMPORTACAO,
                     nf.oidserialecf
            FROM CHANGETABLE (CHANGES [NFSAIDACAD], :lastVersion) AS ct
-        join NFSAIDACAD nf on nf.numord = ct.numord', ['lastVersion' => $lastVersion]);
+        JOIN NFSAIDACAD nf on nf.numord = ct.numord
+        JOIN PEDICLICAD p on p.numped = nf.numped', ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
@@ -255,6 +261,7 @@ class NotaFiscaisService {
                     "ccusto",
                     "obs",
                     "codvend",
+                    "pedido_id",
                     "numped",
                     "valentrad",
                     "codmetra",
