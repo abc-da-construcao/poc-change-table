@@ -71,7 +71,11 @@ class PedidoService {
                     p.numord,
                     p.tpo,
                     p.filial,
-                    p.referencia,
+                    CASE
+                        WHEN (p.referencia is not null) AND (TRIM(p.referencia) <> \'\') AND (p.referencia <> \' \') 
+                            THEN p.referencia
+                        ELSE CAST(p.numped AS VARCHAR(100))
+                    END AS pedido_id,
                     p.moedcor,
                     p.dataatu,
                     p.ordprod,
@@ -195,7 +199,7 @@ class PedidoService {
      */
     public static function flushPediCliCad($dados) {
 
-        Pedidos::upsert($dados, ['numped', 'filial'],
+        Pedidos::upsert($dados, ['pedido_id'],
                 [
                     "numped",
                     "codclie",
@@ -212,7 +216,7 @@ class PedidoService {
                     "numord",
                     "tpo",
                     "filial",
-                    "referencia",
+                    "pedido_id",
                     "moedcor",
                     "dataatu",
                     "ordprod",

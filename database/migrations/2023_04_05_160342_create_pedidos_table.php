@@ -29,7 +29,7 @@ return new class extends Migration {
             $table->string('obs', 30)->nullable(true);
             $table->integer('numord')->nullable(true);
             $table->char('tpo', 30);
-            $table->string('referencia', 100)->nullable(true);
+            $table->string('pedido_id', 100);
             $table->integer('moedcor');
             $table->dateTime('dataatu')->nullable(true);
             $table->string('ordprod', 5)->nullable(true);
@@ -139,7 +139,7 @@ return new class extends Migration {
             $table->decimal('EMPENHO')->nullable(true);
             $table->timestamps();
             
-            $table->unique(array('numped', 'referencia'));
+            $table->unique(array('pedido_id'));
         });
     }
 
