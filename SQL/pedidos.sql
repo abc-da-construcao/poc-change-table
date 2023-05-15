@@ -14,7 +14,11 @@ SELECT
     p.numord,
     p.tpo,
     p.filial,
-    p.referencia,
+    CASE
+        WHEN (p.referencia is not null) AND (TRIM(p.referencia) <> '') AND (p.referencia <> ' ') 
+            THEN p.referencia
+        ELSE CAST(p.numped AS VARCHAR(100))
+    END AS pedido_id,
     p.moedcor,
     p.dataatu,
     p.ordprod,
@@ -126,7 +130,7 @@ SELECT
     lower((select top 1 co.VALOR 
               from COMUNICACAO_V co 
               where co.RITEM = cli.oid and 
-                   co.RTIPO = 32979)) as email_cliente
+                   co.RTIPO = :rtipo)) as email_cliente
 FROM CHANGETABLE (CHANGES [PEDICLICAD], :lastVersion) AS c
 JOIN PEDICLICAD p on p.numped = c.numped
 JOIN clientecad cli on cli.oid = p.codclie
