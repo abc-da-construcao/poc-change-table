@@ -149,6 +149,7 @@ return new class extends Migration {
             $table->decimal("TOTALVALORICMS")->nullable(true);
             $table->decimal("DESPESASIMPORTACAO")->nullable(true);
 
+            $table->string("pedido_id", 100);
             $table->integer("numped")->nullable(true);
             $table->integer("codnatop")->nullable(true);
             $table->integer("localporta")->nullable(true);
