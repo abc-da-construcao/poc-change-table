@@ -152,64 +152,65 @@ class ProdutoService {
     public static function flushProduto($dados) {
 
         Produto::upsert($dados, ['codpro', 'dv', 'id_fornecedor'],
-                [
-                    "codpro",
-                    "dv",
-                    "operation",
-                    "referencia",
-                    "nome_original",
-                    "ncm",
-                    "modelo",
-                    "venda_minima",
-                    "codpro_fabricante",
-                    "un1",
-                    "un2",
-                    "faconv",
-                    "cod_disponibilidade",
-                    "disponibilidade",
-                    "classe",
-                    "cod_classe",
-                    "n1",
-                    "n2",
-                    "n3",
-                    "id_fornecedor",
-                    "fornecedor",
-                    "estado_fornecedor_origem",
-                    "altura",
-                    "largura",
-                    "peso",
-                    "comprimento",
-                    "custo_atual",
-                    "icms_ultima_compra",
-                    "data_ult_compra",
-                    "custo_ult_pesq",
-                    "qtd_min_compra",
-                    "ean",
-                    "cf",
-                    "codigo_mens",
-                    "tributacao_mg",
-                    "origem",
-                    "ref_end"
-                ]);
-    }
+                                [
+                                    "codpro",
+                                    "dv",
+                                    "operation",
+                                    "referencia",
+                                    "nome_original",
+                                    "ncm",
+                                    "modelo",
+                                    "venda_minima",
+                                    "codpro_fabricante",
+                                    "un1",
+                                    "un2",
+                                    "faconv",
+                                    "cod_disponibilidade",
+                                    "disponibilidade",
+                                    "classe",
+                                    "cod_classe",
+                                    "n1",
+                                    "n2",
+                                    "n3",
+                                    "id_fornecedor",
+                                    "fornecedor",
+                                    "estado_fornecedor_origem",
+                                    "altura",
+                                    "largura",
+                                    "peso",
+                                    "comprimento",
+                                    "custo_atual",
+                                    "icms_ultima_compra",
+                                    "data_ult_compra",
+                                    "custo_ult_pesq",
+                                    "qtd_min_compra",
+                                    "ean",
+                                    "cf",
+                                    "codigo_mens",
+                                    "tributacao_mg",
+                                    "origem",
+                                    "ref_end",
+                                    "origem_traking",
+                                ]);
+                    }
 
     /**
      * inserir/update os dados de produto
      */
     public static function flushProdutoComplemento($dados) {
         Produto::upsert($dados, ['codpro', 'dv', 'id_fornecedor'],
-                [
-                    "codpro",
-                    "dv",
-                    "id_fornecedor",
-                    "operation",
-                    "nome_original",
-                    "venda_minima",
-                    "codpro_fabricante",
-                    "altura",
-                    "largura",
-                    "comprimento"
-                ]);
+                                [
+                                    "codpro",
+                                    "dv",
+                                    "id_fornecedor",
+                                    "operation",
+                                    "nome_original",
+                                    "venda_minima",
+                                    "codpro_fabricante",
+                                    "altura",
+                                    "largura",
+                                    "comprimento"
+                                ]);
     }
 
     /**
@@ -217,21 +218,21 @@ class ProdutoService {
     */
     public static function flushProdutoPesquisa($dados) {
 
-        Produto::upsert($dados, ['codigo_externo_pesquisa'],
-                [
-                    "codpro",
-                    "dv",
-                    "codigo_externo_pesquisa",
-                    "oid_pesquisa",
-                    "cod_interno_produtocad",
-                    "operation",
-                    "valor_custo",
-                    "valor_subst_nf",
-                    "valor_subst_ant",
-                    "perc_icms_compra",
-                    "aliq_icms_compra",
-                    "icms_sem_despesas_nao_inclusas"
-                ]);
+        Produto::upsert($dados, ['codpro', 'dv','codigo_externo_pesquisa'],
+                                [
+                                    "codpro",
+                                    "dv",
+                                    "codigo_externo_pesquisa",
+                                    "oid_pesquisa",
+                                    "cod_interno_produtocad",
+                                    "operation",
+                                    "valor_custo",
+                                    "valor_subst_nf",
+                                    "valor_subst_ant",
+                                    "perc_icms_compra",
+                                    "aliq_icms_compra",
+                                    "icms_sem_despesas_nao_inclusas"
+                                ]);
     }
 
     /**
@@ -240,15 +241,15 @@ class ProdutoService {
     public static function flushClassifCad($dados) {
 
         Produto::upsert($dados, ['classe_produto'],
-                [
-                    "classe_produto",
-                    "descricao_classe_prod",
-                    "paga_comissao_ind_oferta",
-                    "similaridade",
-                    "IsActive",
-                    "operation"
-                ]);
-    }
+                                [
+                                    "classe_produto",
+                                    "descricao_classe_prod",
+                                    "paga_comissao_ind_oferta",
+                                    "similaridade",
+                                    "IsActive",
+                                    "operation"
+                                ]);
+                    }
 
 
     /**
@@ -314,7 +315,8 @@ class ProdutoService {
                             WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'N'
                             WHEN pro.origem in ('1', '2', '6' , '7')        THEN 'I'
                             END AS 'origem',
-                        RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
+                        RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end',
+                        'PRODUTOCAD' AS 'origem_traking'
                     FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
                     INNER JOIN complementoproduto CMP ON pro.codpro = cmp.codpro
@@ -343,7 +345,8 @@ class ProdutoService {
                         cmp.alturacm AS 'altura',
                         cmp.larguracm AS 'largura',
                         cmp.comprimentocm AS 'comprimento',
-                        ct.SYS_CHANGE_OPERATION AS 'operation'
+                        ct.SYS_CHANGE_OPERATION AS 'operation',
+                        'COMPLEMENTOPRODUTO' AS 'origem_traking'
                     FROM CHANGETABLE (CHANGES [COMPLEMENTOPRODUTO], :lastVersion) AS ct
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro
                     INNER JOIN complementoproduto cmp ON pro.codpro = cmp.codpro"
@@ -371,6 +374,7 @@ class ProdutoService {
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23188' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'perc_icms_compra',
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23198' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'aliq_icms_compra',
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23160' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'icms_sem_despesas_nao_inclusas'
+                        , 'PESQUISA' AS 'origem_traking'
                     FROM CHANGETABLE (CHANGES [PESQUISA], :lastVersion) AS ct
                     INNER JOIN PESQUISA pq on pq.OID  = ct.oid
                     INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO

@@ -65,6 +65,7 @@ return new class extends Migration {
                         $table->integer('paga_comissao_ind_oferta')->nullable(true);
                         $table->integer('similaridade')->nullable(true);
                         $table->integer('IsActive')->nullable(true);
+                        $table->string('origem_traking', 254)->nullable(true);
                         $table->timestamps();
                         //unique
                         $table->unique(['codpro', 'dv', 'id_fornecedor', 'oid_pesquisa']);
