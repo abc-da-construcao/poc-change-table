@@ -9,6 +9,7 @@ use App\Http\Controllers\ItensPedidoController;
 use App\Http\Controllers\NotasFiscaisController;
 use App\Http\Controllers\ClasseProdutoController;
 use App\Http\Controllers\VendasScadController;
+use App\Http\Controllers\ItensFaturadoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::get('/tracking-itens-pedido', [ItensPedidoController::class, 'itensPedido
 Route::get('/tracking-notas-fiscais', [NotasFiscaisController::class, 'notasFiscais']);
 Route::get('/tracking-classe', [ClasseProdutoController::class, 'classe']);
 Route::get('/tracking-vendas-s-cad', [VendasScadController::class, 'vendas']);
+Route::get('/tracking-itens-faturado', [ItensFaturadoController::class, 'itensFaturado']);
 
 Route::get('/', function () {
     return view('welcome');
