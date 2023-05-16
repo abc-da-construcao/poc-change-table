@@ -30,7 +30,7 @@ return new class extends Migration {
             $table->string('operation')->nullable(true);
             $table->timestamps();
             //unique
-            $table->unique(['oid']);
+            $table->unique(['oid', 'identificador']);
         });
     }
 

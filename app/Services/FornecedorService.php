@@ -56,7 +56,7 @@ class FornecedorService {
     */
     public static function flushFornecedor($dados) {
 
-        Fornecedor::upsert($dados, ['oid'],
+        Fornecedor::upsert($dados, ['oid', 'identificador'],
                         [
                             "oid",
                             "rescopo",
@@ -90,7 +90,7 @@ class FornecedorService {
                         p.IDENTIFICADOR AS 'identificador',
                         i.CODIGO AS 'codigo',
                         i.ATUALIZADOEM AS 'atualizado_em',
-                        i.CRIADOEM AS 'criadoe_m',
+                        i.CRIADOEM AS 'criado_em',
                         i.ATUALIZADOPOR AS 'atualizado_por',
                         i.CRIADOPOR AS 'criado_por',
                         i.CID AS 'cid',
@@ -102,6 +102,7 @@ class FornecedorService {
                     INNER JOIN  ITEM i ON p.OID = i.OID
                     WHERE (i.EXCLUIDO = 0)
                     AND p.OID = i.OID
+                    AND p.RAZAOSOCIAL != ''
                     AND i.OID in (select c.RITEM from CLASSIFICACAO c where c.RCATEGORIA = 2125 or c.OID = 7)"
                     ,['lastVersion' => $lastVersionFornecedor]);
 
