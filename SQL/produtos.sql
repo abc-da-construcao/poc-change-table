@@ -52,10 +52,10 @@ SELECT
     END AS 'tributacao_mg',
     CASE
         WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'Nacional'
-                        WHEN pro.origem IN ('I', 'G', 'H')              THEN 'Importado'
-                        WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'Nacional'
-                    WHEN pro.origem in ('1', '2', '6' , '7')            THEN 'Importado'        
-                   END AS 'origem',
+        WHEN pro.origem IN ('I', 'G', 'H')              THEN 'Importado'
+        WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'Nacional'
+        WHEN pro.origem in ('1', '2', '6' , '7')            THEN 'Importado'
+    END AS 'origem',
     RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
 FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
 INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv

@@ -32,6 +32,7 @@ return new class extends Migration {
 
             $table->integer("numord");
             $table->integer("localporta");
+            $table->string("pedido_id", 100);
             $table->integer("numped");
             $table->integer("oiddocdeorigem");
             $table->integer("condpagposterior");
@@ -42,7 +43,8 @@ return new class extends Migration {
 
             $table->dateTime("dtven");
             $table->dateTime("dtentr")->nullable(true);
-
+            $table->timestamps();
+            
             $table->unique(array('numord'));
         });
     }

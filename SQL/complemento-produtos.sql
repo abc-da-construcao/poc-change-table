@@ -1,6 +1,5 @@
 -- busca complemento do produto que sofreram alterações na tabela COMPLEMENTOPRODUTO
 SELECT
-top 100
     pro.Codpro AS 'codpro',
     pro.dv,
     pro.codfor AS 'id_fornecedor',
