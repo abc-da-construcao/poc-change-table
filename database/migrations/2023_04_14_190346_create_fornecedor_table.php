@@ -14,32 +14,23 @@ return new class extends Migration {
     public function up() {
         Schema::create('fornecedores', function (Blueprint $table) {
             $table->id()->unique();
-
-
-            $table->string('clasprod',14)->nullable(true);
-            $table->string('descr',25)->nullable(true);
-            $table->decimal('anal',5)->nullable(true);
-            $table->decimal('sainalista',5)->nullable(true);
-            $table->decimal('participacfem',5)->nullable(true);
-            $table->decimal('percentualcfem',5, 2)->nullable(true);
-            $table->integer('ativa')->nullable(true);
-            $table->decimal('pagacomissaoindoferta',5)->nullable(true);
-            $table->decimal('perccomissao',5, 2)->nullable(true);
-            $table->decimal('percdescmaximogerente',5, 2)->nullable(true);
-            $table->decimal('percdescmaximovendedor',5, 2)->nullable(true);
-            $table->integer('similaridade')->nullable(true);
-            $table->string('descrdetalhada',60)->nullable(true);
-            $table->decimal('prioridadeentrega',5)->nullable(true);
-            $table->integer('id_erp')->nullable(true);
-            $table->dateTime('atualizadoem')->nullable(true);
-            $table->integer('codigo_gnre')->nullable(true);
+            $table->string('oid')->nullable(true);
+            $table->integer('rescopo')->nullable(true);
+            $table->string('nome',254)->nullable(true);
+            $table->string('razao_social',254)->nullable(true);
+            $table->string('identificador',254)->nullable(true);
+            $table->string('codigo',254)->nullable(true);
+            $table->dateTime('atualizado_em')->nullable(true);
+            $table->dateTime('criado_em')->nullable(true);
+            $table->integer('atualizado_por')->nullable(true);
+            $table->integer('criado_por')->nullable(true);
+            $table->string('cid')->nullable(true);
+            $table->string('observacao',254)->nullable(true);
+            $table->integer('excluido')->nullable(true);
             $table->string('operation')->nullable(true);
-
-
             $table->timestamps();
             //unique
-            $table->unique(['fornecedores']);
-
+            $table->unique(['oid']);
         });
     }
 
@@ -49,6 +40,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('classes');
+        Schema::dropIfExists('fornecedores');
     }
 };
