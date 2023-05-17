@@ -2,84 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Configuracoes;
 use App\Models\Estoque;
 use Illuminate\Support\Facades\DB;
 
 class EstoqueService {
 
-    /**
-     * retorna o ultimo valor q ainda não foi executado em busca dos trackings
-     */
-    public static function getLastVersionControleEstoqueAtual() {
-        $lastVersion = Configuracoes::where('nome', 'change_tracking_estoque_atual')->first();
+    const NOME_CONFIGURACOES_ATUAL = 'change_tracking_estoque_atual';
+    const NOME_CONFIGURACOES_FUTURO = 'change_tracking_estoque_futuro';
 
-        //ainda não tem versao na tabela de controle
-        if (empty($lastVersion)) {
-            $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
-            return $version->version;
-        }
-
-        return $lastVersion->valor;
-    }
-
-    /**
-     * retorna o ultimo valor q ainda não foi executado em busca dos trackings
-     */
-    public static function getLastVersionControleEstoqueFuturo() {
-        $lastVersion = Configuracoes::where('nome', 'change_tracking_estoque_futuro')->first();
-
-        //ainda não tem versao na tabela de controle
-        if (empty($lastVersion)) {
-            $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
-            return $version->version;
-        }
-
-        return $lastVersion->valor;
-    }
-
-    /**
-     * retorna o ultimo tracking para a proximo controle interno da execuçao
-     */
-    public static function getLastVersionTrackingTable() {
-
-        $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
-        return $version->version;
-    }
-
-    /**
-     * atualiza o valor na tabela de controle
-     */
-    public static function updateLastTrackingTableEstoqueAtual($version) {
-
-        //atualiza a ultima versao na tabela de controle
-        $LastVersionTable = Configuracoes::where('nome', 'change_tracking_estoque_atual')->first();
-
-        if (empty($LastVersionTable)) {
-            $LastVersionTable = new Configuracoes();
-            $LastVersionTable->nome = 'change_tracking_estoque_atual';
-        }
-
-        $LastVersionTable->valor = $version;
-        $LastVersionTable->save();
-    }
-
-    /**
-     * atualiza o valor na tabela de controle
-     */
-    public static function updateLastTrackingTableEstoqueFuturo($version) {
-
-        //atualiza a ultima versao na tabela de controle
-        $LastVersionTable = Configuracoes::where('nome', 'change_tracking_estoque_futuro')->first();
-
-        if (empty($LastVersionTable)) {
-            $LastVersionTable = new Configuracoes();
-            $LastVersionTable->nome = 'change_tracking_estoque_futuro';
-        }
-
-        $LastVersionTable->valor = $version;
-        $LastVersionTable->save();
-    }
 
     /**
      * inserir/update os dados de estoque
@@ -128,10 +58,10 @@ class EstoqueService {
                 INNER JOIN itemfilest i ON i.codpro = ct.codpro and i.filial = ct.filial
                 INNER JOIN produtocad pro ON pro.codpro = i.codpro AND pro.dv = i.dv 
                 WHERE (i.quant - i.qtdereserv) > 0", ['lastVersion' => $lastVersion]);
-        
+
         return json_decode(json_encode($dados), true);
     }
-    
+
     /**
      * busca as ultimas modificações da tabela no ERP
      */
@@ -153,8 +83,8 @@ class EstoqueService {
                         pro.dv,
                         pro.codinterno,
                         i.filial", ['lastVersion' => $lastVersion]);
-        
+
         return json_decode(json_encode($dados), true);
     }
-   
+
 }
