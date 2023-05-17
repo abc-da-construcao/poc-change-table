@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Services\ItensFaturadoService;
+use App\Services\ChangeTrackingService;
 
 class ItensFaturadoController extends Controller {
 
     public function itensFaturado() {
         try {
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = ItensFaturadoService::getLastVersionControle();
+            $lastVersion = ChangeTrackingService::getLastVersionControle(ItensFaturadoService::NOME_CONFIGURACOES);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersion = ItensFaturadoService::getLastVersionTrackingTable();
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
             $vendasScadERP = ItensFaturadoService::getLastChagingTrackingERP($lastVersion);
@@ -25,7 +26,7 @@ class ItensFaturadoController extends Controller {
             }
 
             /* atualiza na tabela de configurações */
-            ItensFaturadoService::updateLastTrackingTable($updateVersion);
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, ItensFaturadoService::NOME_CONFIGURACOES);
 
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {

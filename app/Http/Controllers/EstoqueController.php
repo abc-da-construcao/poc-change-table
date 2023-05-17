@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\EstoqueService;
-use App\Jobs\CargaEstoqueAtualJob;
+use App\Services\ChangeTrackingService;
 
 class EstoqueController extends Controller {
 
@@ -13,10 +13,10 @@ class EstoqueController extends Controller {
             //ESTOQUE ATUAL
             //------------------------------------------------------------------
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = EstoqueService::getLastVersionControleEstoqueAtual();
+            $lastVersion = ChangeTrackingService::getLastVersionControle(EstoqueService::NOME_CONFIGURACOES_ATUAL);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersion = EstoqueService::getLastVersionTrackingTable();
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
             $dadosTrackingERP = EstoqueService::getLastChagingTrackingEstoqueAtual($lastVersion);
@@ -28,16 +28,16 @@ class EstoqueController extends Controller {
             }
 
             //atualiza na tabela de configurações
-            EstoqueService::updateLastTrackingTableEstoqueAtual($updateVersion);
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, EstoqueService::NOME_CONFIGURACOES_ATUAL);
 
             //------------------------------------------------------------------
             //ESTOQUE FUTURO
             //------------------------------------------------------------------
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionFuturo = EstoqueService::getLastVersionControleEstoqueFuturo();
+            $lastVersionFuturo = ChangeTrackingService::getLastVersionControle(EstoqueService::NOME_CONFIGURACOES_FUTURO);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersionFuturo = EstoqueService::getLastVersionTrackingTable();
+            $updateVersionFuturo = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
             $dadosTrackingERPFuturo = EstoqueService::getLastChagingTrackingEstoqueFuturo($lastVersionFuturo);
@@ -49,7 +49,7 @@ class EstoqueController extends Controller {
             }
 
             //atualiza na tabela de configurações
-            EstoqueService::updateLastTrackingTableEstoqueFuturo($updateVersionFuturo);
+            ChangeTrackingService::updateLastTrackingTable($updateVersionFuturo, EstoqueService::NOME_CONFIGURACOES_FUTURO);
 
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {

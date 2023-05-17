@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Services\NotaFiscaisService;
 use App\Services\ItensNotaFiscalService;
+use App\Services\ChangeTrackingService;
 
 class NotasFiscaisController extends Controller {
 
     public function notasFiscais() {
         try {
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = NotaFiscaisService::getLastVersionControle();
+            $lastVersion = ChangeTrackingService::getLastVersionControle(NotaFiscaisService::NOME_CONFIGURACOES);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersion = NotaFiscaisService::getLastVersionTrackingTable();
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
             $notasFiscaisERP = NotaFiscaisService::getLastChagingTrackingERP($lastVersion);
@@ -44,7 +45,7 @@ class NotasFiscaisController extends Controller {
             }
 
             /* atualiza na tabela de configurações */
-            NotaFiscaisService::updateLastTrackingTable($updateVersion);
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, NotaFiscaisService::NOME_CONFIGURACOES);
 
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {

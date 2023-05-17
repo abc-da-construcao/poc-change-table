@@ -11,6 +11,7 @@ use App\Http\Controllers\ClasseProdutoController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\VendasScadController;
 use App\Http\Controllers\ItensFaturadoController;
+use App\Http\Controllers\FiliaisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::get('/tracking-classe', [ClasseProdutoController::class, 'classe']);
 Route::get('/tracking-fornecedor', [FornecedorController::class, 'fornecedor']);
 Route::get('/tracking-vendas-s-cad', [VendasScadController::class, 'vendas']);
 Route::get('/tracking-itens-faturado', [ItensFaturadoController::class, 'itensFaturado']);
+Route::get('/tracking-filiais', [FiliaisController::class, 'filiais']);
 
 Route::get('/', function () {
     return view('welcome');

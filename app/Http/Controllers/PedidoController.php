@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Services\PedidoService;
 use App\Services\ClienteService;
 use App\Services\EnderecoClienteService;
+use App\Services\ChangeTrackingService;
 
 class PedidoController extends Controller {
 
     public function index() {
         try {
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = PedidoService::getLastVersionControle();
+            $lastVersion = ChangeTrackingService::getLastVersionControle(PedidoService::NOME_CONFIGURACOES);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersion = PedidoService::getLastVersionTrackingTable();
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
             $pedidosTrackingERP = PedidoService::getLastChagingTrackingERP($lastVersion);
@@ -63,7 +64,7 @@ class PedidoController extends Controller {
             }//FIM FOREACH CHUNK EXTERNO
 
             /* atualiza na tabela de configurações */
-            PedidoService::updateLastTrackingTable($updateVersion);
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, PedidoService::NOME_CONFIGURACOES);
 
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {
