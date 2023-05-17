@@ -2,54 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Configuracoes;
 use App\Models\ClasseProduto;
 use Illuminate\Support\Facades\DB;
 
 class ClasseProdutoService {
 
-    /**
-     * retorna o ultimo valor q ainda não foi executado em busca dos trackings
-     */
-    public static function getLastVersionClassifCadControle() {
-        $lastVersion = Configuracoes::where('nome', 'change_tracking_produto_classifCad')->first();
-
-        //ainda não tem versao na tabela de controle
-        if (empty($lastVersion)) {
-            $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
-            return $version->version;
-        }
-        return $lastVersion->valor;
-    }
-
-
-    /**
-     * atualiza o valor na tabela de controle
-     */
-    public static function updateLastTrackingClassifCadTable($version) {
-
-        //atualiza a ultima versao na tabela de controle
-        $LastVersionTable = Configuracoes::where('nome', 'change_tracking_produto_classifCad')->first();
-
-        if (empty($LastVersionTable)) {
-            $LastVersionTable = new Configuracoes();
-            $LastVersionTable->nome = 'change_tracking_produto_classifCad';
-        }
-
-        $LastVersionTable->valor = $version;
-        $LastVersionTable->save();
-    }
-
-
-    /**
-     * retorna o ultimo tracking para a proximo controle interno da execuçao
-     */
-    public static function getLastVersionTrackingTable() {
-
-        $version = DB::connection('sqlsrv_ERP')->selectOne('select CHANGE_TRACKING_CURRENT_VERSION() as version');
-        return $version->version;
-    }
-
+    const NOME_CONFIGURACOES = 'change_tracking_produto_classifCad';
 
     /**
      * inserir/update os dados de produto

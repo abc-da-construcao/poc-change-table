@@ -3,30 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Services\FornecedorService;
+use App\Services\ChangeTrackingService;
 
 class FornecedorController extends Controller {
 
     public function fornecedor() {
         try {
             //** *********************************************************************************************************** *//
-            //      Search for traking in table PESSOA e ITEM para formar a tabela fornecedor no MDM
+            //   Busca alteracoes nas tabelas PESSOA e ITEM para alimentar a tabela fornecedor no MDM
             //** *********************************************************************************************************** *//
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionFornecedor = FornecedorService::getLastVersionFornecedorControle();
+            $lastVersion = ChangeTrackingService::getLastVersionControle(FornecedorService::NOME_CONFIGURACOES);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersionFornecedor = FornecedorService::getLastVersionTrackingTable();
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteracoes de classes do produto no ERP
-            $dadosFornecedorTrackingERP = FornecedorService::getLastChagingTrackingFornecedor($lastVersionFornecedor);
+            $dadosFornecedorTrackingERP = FornecedorService::getLastChagingTrackingFornecedor($lastVersion);
 
             $chunksFornecedor = array_chunk($dadosFornecedorTrackingERP, 500); // limita a carga da consulta em 500 registros por vez
             foreach ($chunksFornecedor as $chunkFornecedor) {
                 //add/update na tabela "espelho produto"
                 FornecedorService::flushFornecedor($chunkFornecedor);
             }
-            //atualiza na tabela de configuracoes
-            FornecedorService::updateLastTrackingFornecedorTable($updateVersionFornecedor);
+            /* atualiza na tabela de configurações */
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, FornecedorService::NOME_CONFIGURACOES);
 
             //print execution
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
