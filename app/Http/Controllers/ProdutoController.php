@@ -3,73 +3,67 @@
 namespace App\Http\Controllers;
 
 use App\Services\ProdutoService;
+use App\Services\ChangeTrackingService;
 
 class ProdutoController extends Controller {
 
     public function produto() {
         try {
             //** *********************************************************************************************************** *//
-            //      Search for traking in table PRODUTOCAD
+            //   Busca alteracoes na tabela PRODUTOCAD para alimentar a tabela produtos no MDM
             //** *********************************************************************************************************** *//
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionProduto = ProdutoService::getLastVersionProdutoControle();
-
+            $lastVersion = ChangeTrackingService::getLastVersionControle(ProdutoService::NOME_CONFIGURACOES_PROD);
             //Busco a última versão do change tracking do SQL Server
-            $updateVersionProduct = ProdutoService::getLastVersionTrackingTable();
-
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
             //busco as ultimas alteraçẽos no ERP
-            $dadosProdutoTrackingERP = ProdutoService::getLastChagingTrackingProduto($lastVersionProduto);
+            $dadosProdutoTrackingERP = ProdutoService::getLastChagingTrackingProduto($lastVersion);
 
             $chunks = array_chunk($dadosProdutoTrackingERP, 500); // limita a carga da consulta em 500 registros por vez
             foreach ($chunks as $chunk) {
                 //add/update na tabela "espelho produto"
                 ProdutoService::flushProduto($chunk);
             }
-            //atualiza na tabela de configurações
-            ProdutoService::updateLastTrackingProdutoTable($updateVersionProduct);
+            /* atualiza na tabela de configurações */
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, ProdutoService::NOME_CONFIGURACOES_PROD);
 
 
             //** *********************************************************************************************************** *//
-            //      Search for traking in table COMPLEMENTOPRODUTO
+            //   Busca alteracoes na tabela COMPLEMENTOPRODUTO para alimentar a tabela produtos no MDM
             //** *********************************************************************************************************** *//
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionProdutoComplemento = ProdutoService::getLastVersionProdutoComplementoControle();
-
+            $lastVersion = ChangeTrackingService::getLastVersionControle(ProdutoService::NOME_CONFIGURACOES_COMPL_PROD);
             //Busco a última versão do change tracking do SQL Server
-            $updateVersionComplement = ProdutoService::getLastVersionTrackingTable();
-
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
             //busco as ultimas alteraçẽos de complemento do produto no ERP
-            $dadosProdutoComplementoTrackingERP = ProdutoService::getLastChagingTrackingProdutoComplemento($lastVersionProdutoComplemento);
+            $dadosProdutoComplementoTrackingERP = ProdutoService::getLastChagingTrackingProdutoComplemento($lastVersion);
 
             $chunksComp = array_chunk($dadosProdutoComplementoTrackingERP, 500); // limita a carga da consulta em 500 registros por vez
             foreach ($chunksComp as $chunkComp) {
                 //add/update na tabela "espelho produto"
                 ProdutoService::flushProdutoComplemento($chunkComp);
             }
-            //atualiza na tabela de configurações
-            ProdutoService::updateLastTrackingProdutoComplementoTable($updateVersionComplement);
+            /* atualiza na tabela de configurações */
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, ProdutoService::NOME_CONFIGURACOES_COMPL_PROD);
 
 
             //** *********************************************************************************************************** *//
-            //      Search for traking in table PESQUISA
+            //   Busca alteracoes na tabela PESQUISA para alimentar a tabela produtos no MDM
             //** *********************************************************************************************************** *//
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionProdutoPesquisa = ProdutoService::getLastVersionProdutoPesquisaControle();
-
+            $lastVersion = ChangeTrackingService::getLastVersionControle(ProdutoService::NOME_CONFIGURACOES_PESQUISA);
             //Busco a última versão do change tracking do SQL Server
-            $updateVersionPesquisa = ProdutoService::getLastVersionTrackingTable();
-
+            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
             //busco as ultimas alteraçẽos de complemento do produto no ERP
-            $dadosProdutoPesquisaTrackingERP = ProdutoService::getLastChagingTrackingProdutoPesquisa($lastVersionProdutoPesquisa);
+            $dadosProdutoPesquisaTrackingERP = ProdutoService::getLastChagingTrackingProdutoPesquisa($lastVersion);
 
             $chunksPesquisa = array_chunk($dadosProdutoPesquisaTrackingERP, 500); // limita a carga da consulta em 500 registros por vez
             foreach ($chunksPesquisa as $chunkPesquisa) {
                 //add/update na tabela "espelho produto"
                 ProdutoService::flushProdutoPesquisa($chunkPesquisa);
             }
-            //atualiza na tabela de configurações
-            ProdutoService::updateLastTrackingProdutoPesquisaTable($updateVersionPesquisa);
-
+            /* atualiza na tabela de configurações */
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, ProdutoService::NOME_CONFIGURACOES_PESQUISA);
 
             //print execution
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
