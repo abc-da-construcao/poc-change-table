@@ -1,6 +1,5 @@
 -- busca produtos que sofreram alterações na tabela PRODUTOCAD
 SELECT
-TOP 100
     bc.codpro AS 'codpro',
     bc.basecont AS 'base_cont',
     bc.basencont AS 'bas_en_cont',
