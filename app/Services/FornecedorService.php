@@ -102,7 +102,6 @@ class FornecedorService {
                     INNER JOIN  ITEM i ON p.OID = i.OID
                     WHERE (i.EXCLUIDO = 0)
                     AND p.OID = i.OID
-                    AND p.RAZAOSOCIAL != ''
                     AND i.OID in (select c.RITEM from CLASSIFICACAO c where c.RCATEGORIA = 2125 or c.OID = 7)"
                     ,['lastVersion' => $lastVersionFornecedor]);
 
