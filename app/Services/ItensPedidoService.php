@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Configuracoes;
 use App\Models\ItensPedido;
 use Illuminate\Support\Facades\DB;
 
