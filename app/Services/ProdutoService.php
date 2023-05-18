@@ -83,7 +83,7 @@ class ProdutoService {
     */
     public static function flushProdutoPesquisa($dados) {
 
-        Produto::upsert($dados, ['codpro', 'dv','codigo_externo_pesquisa'],
+        Produto::upsert($dados, ['codpro', 'dv', 'id_fornecedor', 'codigo_externo_pesquisa'],
                                 [
                                     "codpro",
                                     "dv",

@@ -62,7 +62,8 @@ return new class extends Migration {
                         $table->decimal('icms_sem_despesas_nao_inclusas')->nullable(true);
                         $table->timestamps();
                         //unique
-                        $table->unique(['codpro', 'dv', 'id_fornecedor', 'oid_pesquisa']);
+                        $table->unique(['codpro', 'dv', 'id_fornecedor', 'codigo_externo_pesquisa']);
+                        $table->unique(['codpro', 'dv', 'id_fornecedor']);
                     });
     }
 
