@@ -87,6 +87,7 @@ class ProdutoService {
                                 [
                                     "codpro",
                                     "dv",
+                                    "id_fornecedor",
                                     "codigo_externo_pesquisa",
                                     "oid_pesquisa",
                                     "cod_interno_produtocad",
@@ -212,6 +213,7 @@ class ProdutoService {
                     "SELECT
                         Pro.Codpro 			AS 'codpro',
                         pro.dv 				AS 'dv',
+                        pro.codfor 		AS 'id_fornecedor',
                         pro.codinterno		AS 'cod_interno_produtocad',
                         pq.CODIGOEXTERNO	AS 'codigo_externo_pesquisa',
                         pq.OID				AS 'oid_pesquisa',
