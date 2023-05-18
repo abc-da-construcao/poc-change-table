@@ -20,7 +20,8 @@ return new class extends Migration {
             $table->string('referencia');
             $table->decimal('estoque_atual', 8, 3)->nullable(true);
             $table->decimal('estoque_futuro', 8, 3)->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
             //unique
             $table->unique(['codpro', 'dv', 'filial']);

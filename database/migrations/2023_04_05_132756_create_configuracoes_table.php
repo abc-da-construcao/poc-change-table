@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nome')->unique();
             $table->longText('valor');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });
     }
 

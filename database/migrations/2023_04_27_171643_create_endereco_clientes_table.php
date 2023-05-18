@@ -23,7 +23,8 @@ return new class extends Migration {
             $table->string('uf', 2)->nullable(true);
             $table->string('complemento', 254)->nullable(true);
             $table->string('contato', 254)->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique
             $table->unique(['cpf_cnpj','cep','numero']);
         });

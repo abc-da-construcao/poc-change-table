@@ -32,7 +32,8 @@ return new class extends Migration {
             $table->dateTime('atualizadoem')->nullable(true);
             $table->integer('codigo_gnre')->nullable(true);
             $table->string('operation')->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique
             $table->unique(['clasprod']);
 

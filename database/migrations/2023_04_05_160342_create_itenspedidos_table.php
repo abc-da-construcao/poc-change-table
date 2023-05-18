@@ -103,7 +103,8 @@ return new class extends Migration {
             $table->integer("RCADASTROFAIXADESCONTO")->nullable(true);
             $table->decimal("PrecoOferta")->nullable(true);
             $table->decimal("VALORIPITX")->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });
     }
 

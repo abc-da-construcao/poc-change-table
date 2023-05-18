@@ -49,7 +49,8 @@ return new class extends Migration {
             $table->dateTime("DTFIMSEPARACAO")->nullable(true);
             $table->dateTime("DATAALTEROUSITMANUT")->nullable(true);
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
             $table->unique(array('Reservado','Item'));
         });

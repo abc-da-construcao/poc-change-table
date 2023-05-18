@@ -138,7 +138,8 @@ return new class extends Migration {
             $table->string('ENDERECOFATURA', 1)->nullable(true);
             $table->decimal('CONTRATO')->nullable(true);
             $table->decimal('EMPENHO')->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
             $table->unique(array('pedido_id'));
         });

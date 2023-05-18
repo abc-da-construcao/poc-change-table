@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('inscricao_estadual', 17)->nullable(true);
             $table->string('email', 254)->nullable(true);
             $table->string('celular', 50)->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique
             $table->unique(['cpf_cnpj']);
         });

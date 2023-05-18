@@ -60,7 +60,10 @@ return new class extends Migration {
                         $table->decimal('perc_icms_compra')->nullable(true);
                         $table->decimal('aliq_icms_compra')->nullable(true);
                         $table->decimal('icms_sem_despesas_nao_inclusas')->nullable(true);
-                        $table->timestamps();
+                        
+                        $table->timestamp('created_at')->useCurrent();
+                        $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+
                         //unique
                         $table->unique(['codpro', 'dv', 'id_fornecedor', 'codigo_externo_pesquisa']);
                         $table->unique(['codpro', 'dv', 'id_fornecedor']);

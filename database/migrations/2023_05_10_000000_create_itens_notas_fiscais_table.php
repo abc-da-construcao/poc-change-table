@@ -77,7 +77,8 @@ return new class extends Migration {
             $table->dateTime("dtemis");
 
             $table->unique(array('numord','codpro', 'dv','ITEM'));
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });
     }
 

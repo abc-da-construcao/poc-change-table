@@ -43,7 +43,8 @@ return new class extends Migration {
 
             $table->dateTime("dtven");
             $table->dateTime("dtentr")->nullable(true);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             
             $table->unique(array('numord'));
         });
