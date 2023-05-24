@@ -36,9 +36,9 @@ return new class extends Migration {
             $table->integer("ORDEMCARGA")->nullable(true);
             $table->integer("CARGAROTEIRIZADOR")->nullable(true);
 
-            $table->decimal("ROTEIRIZADOR");
-            $table->decimal("Quant")->nullable(true);
-            $table->decimal("VIAORDEMSEPARACAO")->nullable(true);
+            $table->double("ROTEIRIZADOR");
+            $table->double("Quant")->nullable(true);
+            $table->double("VIAORDEMSEPARACAO")->nullable(true);
 
             $table->dateTime("Reservado");
             $table->dateTime("Faturado")->nullable(true);

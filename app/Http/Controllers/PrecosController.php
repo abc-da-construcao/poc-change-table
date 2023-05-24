@@ -9,25 +9,54 @@ class PrecosController extends Controller {
 
     public function precos() {
         try {
+            
+            //------------------------------------------------------------------
+            //PREÇOS EM PROMOÇÃO
+            //------------------------------------------------------------------
+            
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = ChangeTrackingService::getLastVersionControle(PrecosService::NOME_CONFIGURACOES);
+            $lastVersionPromocao = ChangeTrackingService::getLastVersionControle(PrecosService::NOME_CONFIGURACOES_PRECO_PROMOCAO);
 
             //Busco a última versão do change tracking do SQL Server
-            $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
+            $updateVersionPromocao = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
-            $vendasScadERP = PrecosService::getLastChagingTrackingERP($lastVersion);
+            $vendasScadERPpromocao = PrecosService::getLastChagingTrackingERPpromocao($lastVersionPromocao);
 
-            $chunks = array_chunk($vendasScadERP, 500);
+            $chunksPromocao = array_chunk($vendasScadERPpromocao, 500);
 
-            foreach ($chunks as $chunk) {
+            foreach ($chunksPromocao as $chunk) {
                 //add/update na tabela "espelho"
-                PrecosService::flushPrecos($chunk);
+                PrecosService::flushPrecosPromocao($chunk);
             }
 
             /* atualiza na tabela de configurações */
-            ChangeTrackingService::updateLastTrackingTable($updateVersion, PrecosService::NOME_CONFIGURACOES);
+            ChangeTrackingService::updateLastTrackingTable($updateVersionPromocao, PrecosService::NOME_CONFIGURACOES_PRECO_PROMOCAO);
 
+            //------------------------------------------------------------------
+            //PREÇOS NORMAIS
+            //------------------------------------------------------------------
+            
+                        //Busco na tabela de configurações a ultima versão que utilizamos
+            $lastVersionNormal = ChangeTrackingService::getLastVersionControle(PrecosService::NOME_CONFIGURACOES_PRECO_NORMAL);
+
+            //Busco a última versão do change tracking do SQL Server
+            $updateVersionNormal = ChangeTrackingService::getLastVersionTrackingTable();
+
+            //busco as ultimas alteraçẽos no ERP
+            $vendasScadERPnormal = PrecosService::getLastChagingTrackingERPnormal($lastVersionNormal);
+
+            $chunksNormal = array_chunk($vendasScadERPnormal, 500);
+
+            foreach ($chunksNormal as $chunk) {
+                //add/update na tabela "espelho"
+                PrecosService::flushPrecosNormal($chunk);
+            }
+
+            /* atualiza na tabela de configurações */
+            ChangeTrackingService::updateLastTrackingTable($updateVersionNormal, PrecosService::NOME_CONFIGURACOES_PRECO_NORMAL);
+
+            
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

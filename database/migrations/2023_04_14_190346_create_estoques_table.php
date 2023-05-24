@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->string('dv');
             $table->smallInteger('filial');
             $table->string('referencia');
-            $table->decimal('estoque_atual', 8, 3)->nullable(true);
-            $table->decimal('estoque_futuro', 8, 3)->nullable(true);
+            $table->double('estoque_atual', 8, 3)->nullable(true);
+            $table->double('estoque_futuro', 8, 3)->nullable(true);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 

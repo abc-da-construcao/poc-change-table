@@ -22,13 +22,13 @@ return new class extends Migration {
             $table->string("situacao", 1)->nullable(true);
             $table->string("TIPO", 3)->nullable(true);
 
-            $table->decimal("totven");
-            $table->decimal("freteorc")->nullable(true);
-            $table->decimal("taxanf")->nullable(true);
-            $table->decimal("OUTRASDESPESASINCLUSAS")->nullable(true);
-            $table->decimal("TOTRECANTECIPADO")->nullable(true);
-            $table->decimal("TROCO")->nullable(true);
-            $table->decimal("VALORDOACAO")->nullable(true);
+            $table->double("totven");
+            $table->double("freteorc")->nullable(true);
+            $table->double("taxanf")->nullable(true);
+            $table->double("OUTRASDESPESASINCLUSAS")->nullable(true);
+            $table->double("TOTRECANTECIPADO")->nullable(true);
+            $table->double("TROCO")->nullable(true);
+            $table->double("VALORDOACAO")->nullable(true);
 
             $table->integer("numord");
             $table->integer("localporta");

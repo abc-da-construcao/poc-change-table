@@ -16,18 +16,18 @@ return new class extends Migration {
             $table->id();
             $table->string("referencia", 254)->nullable(true);
             $table->integer("rpromocao")->nullable(true);
-            $table->decimal("oferta")->nullable(true);
+            $table->double("oferta")->nullable(true);
             $table->integer("oid_produto_promocao")->nullable(true);
-            $table->decimal("qtde_ofertada")->nullable(true);
-            $table->decimal("qtde_reservada")->nullable(true);
+            $table->double("qtde_ofertada")->nullable(true);
+            $table->double("qtde_reservada")->nullable(true);
             $table->integer("area_venda")->nullable(true);
             $table->timestamp('inicio')->nullable(true);
             $table->timestamp('termino')->nullable();
             $table->integer("rpessoa")->nullable(true);
             $table->string("filial", 2)->nullable(true);
             $table->string("filial_nome", 30)->nullable(true);
-            $table->decimal("de")->nullable(true);
-            $table->decimal("por")->nullable(true);
+            $table->double("de")->nullable(true);
+            $table->double("por")->nullable(true);
             $table->string("desc_area_venda", 40)->nullable(true);
                     
             
