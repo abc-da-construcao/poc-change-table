@@ -34,35 +34,17 @@ class PrecosService {
                     AV.DESCR AS \'desc_area_venda\'
                 FROM CHANGETABLE (CHANGES [PRODUTOPROMOCAO], :lastVersion) AS ct
                 INNER JOIN PRODUTOPROMOCAO PPM ON ct.oid = PPM.OID 
-                LEFT JOIN PROMOCAO PM ON PM.OID = PPM.RPROMOCAO 
-                LEFT JOIN ITEMAUTORIZADO IA ON IA.RITEM = PPM.RPROMOCAO 
-                LEFT JOIN FILIALCAD F ON IA.RPESSOA = F.OID 
-                LEFT JOIN PROMOCAOPLANO PP ON PP.RPROMOCAO = PPM.RPROMOCAO 
-                LEFT JOIN ADITIVO A ON A.RITEM = F.OID 
-                LEFT JOIN DADOADICIONAL_V DA ON A.RDEFINICAO = DA.OID 
-                LEFT JOIN AREAPRECAD APC ON APC.areavend = A.NVALOR AND APC.codinterno = PPM.CODIGOEXTERNO1 
-                LEFT JOIN AREAVENCAD AV ON APC.areavend = AV.AREAVEND 
+                INNER JOIN PROMOCAO PM ON PM.OID = PPM.RPROMOCAO 
+                INNER JOIN ITEMAUTORIZADO IA ON IA.RITEM = PPM.RPROMOCAO 
+                INNER JOIN FILIALCAD F ON IA.RPESSOA = F.OID 
+                INNER JOIN ADITIVO A ON A.RITEM = F.OID 
+                INNER JOIN AREAPRECAD APC ON APC.areavend = A.NVALOR AND APC.codinterno = PPM.CODIGOEXTERNO1 
+                INNER JOIN AREAVENCAD AV ON APC.areavend = AV.AREAVEND 
                 WHERE PPM.QtdeOfertada > 0
-                    AND PP.RPLANODEPAGAMENTO = \'2230942\' -- Plano de pagamento A VISTA
-                        AND DA.OID = \'29661\' -- Dado adicional \'Área de Vendas atendida pela Filial\'
+                        AND A.RDEFINICAO = \'29661\' -- Dado adicional \'Área de Vendas atendida pela Filial\'
                         AND CONCAT((CONVERT(date, SYSDATETIME())), \' 00:00:00.000\') >= PM.INICIO 
                         AND CONCAT((CONVERT(date, SYSDATETIME())), \' 23:59:59.000\') < PM.TERMINO + 1
-                group BY 
-                        PPM.codigoexterno1,
-                        PPM.rpromocao, 
-                        PPM.preco, 
-                        PPM.oid, 
-                        PPM.qtdeofertada, 
-                        PPM.qtdereservada, 
-                        PPM.areavend, 
-                        PM.inicio, 
-                        PM.termino, 
-                        IA.rpessoa, 
-                        F.filial, 
-                        F.nome, 
-                        APC.precoven, 
-                        APC.precoven, 
-                        AV.descr', ['lastVersion' => $lastVersion]);
+                ', ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
