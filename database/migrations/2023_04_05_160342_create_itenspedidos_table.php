@@ -48,7 +48,7 @@ return new class extends Migration {
             $table->double("qtddisplib")->nullable(true);
             $table->double("precostx")->nullable(true);
             $table->string("tpa_cod", 2)->nullable(true);
-            $table->double("faconv")->nullable(true);
+            $table->decimal("faconv",15,8)->nullable(true);
             $table->double("preconf")->nullable(true);
             $table->double("precocomp")->nullable(true);
             $table->double("quantdisp")->nullable(true);
@@ -60,8 +60,8 @@ return new class extends Migration {
             $table->integer("rcarenciaparcela")->nullable(true);
             $table->integer("rdocplano")->nullable(true);
             $table->integer("rdocentrada")->nullable(true);
-            $table->double("fator1")->nullable(true);
-            $table->double("fator2")->nullable(true);
+            $table->decimal("fator1",15,8)->nullable(true);
+            $table->decimal("fator2",15,8)->nullable(true);
             $table->integer("ITEMSERVICO")->nullable(true);
             $table->string("filialretirada", 2)->nullable(true);
             $table->string("filialtransferencia", 2)->nullable(true);
@@ -91,7 +91,7 @@ return new class extends Migration {
             $table->double("flagoferta")->nullable(true);
             $table->string("ItemFat", 5)->nullable(true);
             $table->double("custoreposicao")->nullable(true);
-            $table->double("PRECOTX")->nullable(true);
+            $table->decimal("PRECOTX",15,2)->nullable(true);
             $table->double("PRECOUNITORIG")->nullable(true);
             $table->integer("ID_CLIENTECENTROCUSTO")->nullable(true);
             $table->double("PRECOCOMICMS")->nullable(true);
