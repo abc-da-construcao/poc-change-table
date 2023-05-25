@@ -27,24 +27,24 @@ class PedidoController extends Controller {
             foreach ($chunks as $chunk) {
                 foreach ($chunk as $key => $value) {
                     $clientes[$key] = [
-                        'cpf_cnpj' => trim($value['cpf_cnpj']),
-                        'nome' => trim($value['nome_cliente']),
-                        'razao_social' => trim($value['razaocli']),
-                        'inscricao_estadual' => trim($value['inscli']),
-                        'email' => trim($value['email_cliente']),
-                        'celular' => trim($value['telecli']),
+                        'cpf_cnpj' => $value['cpf_cnpj'],
+                        'nome' => $value['nome_cliente'],
+                        'razao_social' => $value['razaocli'],
+                        'inscricao_estadual' => $value['inscli'],
+                        'email' => $value['email_cliente'],
+                        'celular' => $value['telecli'],
                     ];
 
                     $enderecoCliente[$key] = [
-                        'cpf_cnpj' => trim($value['cpf_cnpj']),
-                        'logradouro' => trim($value['endercli']),
-                        'numero' => trim($value['NumClie']),
-                        'bairro' => trim($value['bairrcli']),
-                        'cidade' => trim($value['cidadcli']),
-                        'cep' => trim($value['cepcli']),
-                        'uf' => trim($value['estcli']),
-                        'complemento' => trim($value['COMPLCLI']),
-                        'contato' => trim($value['contato']),
+                        'cpf_cnpj' => $value['cpf_cnpj'],
+                        'logradouro' => $value['endercli'],
+                        'numero' => $value['NumClie'],
+                        'bairro' => $value['bairrcli'],
+                        'cidade' => $value['cidadcli'],
+                        'cep' => $value['cepcli'],
+                        'uf' => $value['estcli'],
+                        'complemento' => $value['COMPLCLI'],
+                        'contato' => $value['contato'],
                     ];
 
                     //remover os campos que não existem na tabela de pedido

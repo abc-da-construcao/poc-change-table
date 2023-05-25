@@ -15,7 +15,7 @@ class PedidoService {
     public static function getLastChagingTrackingERP($lastVersion) {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
-                'SELECT
+                "SELECT
                     p.numped,
                     p.codclie,
                     p.numorc,
@@ -33,7 +33,7 @@ class PedidoService {
                     p.filial,
                     p.referencia,
                     CASE
-                        WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
+                        WHEN (p.referencia is not null) AND (p.referencia <> '') AND (p.referencia <> ' ')  
                             THEN p.referencia
                         ELSE CAST(p.numped AS VARCHAR(100))
                     END AS pedido_id,
@@ -44,14 +44,14 @@ class PedidoService {
                     p.valfrete,
                     p.perseguro,
                     p.valseguro,
-                    p.razaocli,
-                    p.endercli,
-                    p.bairrcli,
-                    p.cidadcli,
-                    p.cepcli,
-                    p.cgccli as cpf_cnpj,
-                    p.inscli,
-                    p.estcli,
+                    TRIM(p.razaocli) as razaocli,
+                    TRIM(p.endercli) AS endercli,
+                    TRIM(p.bairrcli) as bairrcli,
+                    TRIM(p.cidadcli) as cidadcli,
+                    TRIM(p.cepcli) AS cepcli,
+                    REPLACE(REPLACE(REPLACE(TRIM(p.cgccli),'.', ''),'-', ''),'/', '') as cpf_cnpj,
+                    TRIM(p.inscli) as inscli,
+                    TRIM(p.estcli) AS estcli,
                     p.tipnota,
                     p.codtran,
                     p.codtran2,
@@ -74,7 +74,7 @@ class PedidoService {
                     p.libatra,
                     p.sitven,
                     p.naoaprov,
-                    p.telecli,
+                    TRIM(p.telecli) as telecli,
                     p.horaped,
                     p.freteorc,
                     p.numfrete,
@@ -86,14 +86,14 @@ class PedidoService {
                     p.tipofrete,
                     p.codrote,
                     p.SitConf,
-                    p.NumClie,
+                    TRIM(p.NumClie) as NumClie,
                     p.ContribClie,
                     p.FilialVend,
                     p.destino,
                     p.CodMens,
                     p.Tributado,
                     p.inscsufracli,
-                    p.COMPLCLI,
+                    TRIM(p.COMPLCLI) AS COMPLCLI,
                     p.sitmanut,
                     p.codforout,
                     p.deporigem,
@@ -118,7 +118,7 @@ class PedidoService {
                     p.oidcontato,
                     p.LIBTPDOC,
                     p.Apelido,
-                    p.contato,
+                    TRIM(p.contato) AS contato,
                     p.PerDescto,
                     p.reservaconjunto,
                     p.viamont,
@@ -144,14 +144,14 @@ class PedidoService {
                     p.ENDERECOFATURA,
                     p.CONTRATO,
                     p.EMPENHO,
-                    cli.nome AS nome_cliente,
-                    lower((select top 1 co.VALOR 
+                    TRIM(cli.nome) AS nome_cliente,
+                    TRIM(lower((select top 1 co.VALOR 
                           from COMUNICACAO_V co 
                           where co.RITEM = cli.oid and 
-                               co.RTIPO = :rtipo)) as email_cliente
+                               co.RTIPO = :rtipo))) as email_cliente
                 FROM CHANGETABLE (CHANGES [PEDICLICAD], :lastVersion) AS c
                 JOIN PEDICLICAD p on p.numped = c.numped
-                JOIN clientecad cli on cli.oid = p.codclie', ['lastVersion' => $lastVersion, 'rtipo' => "32979"]);
+                JOIN clientecad cli on cli.oid = p.codclie", ['lastVersion' => $lastVersion, 'rtipo' => "32979"]);
         return json_decode(json_encode($dados), true);
     }
 
