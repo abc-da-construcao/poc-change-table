@@ -14,8 +14,9 @@ class BaseCalFatService {
      */
     public static function flushBaseCalFat($dados) {
 
-        BaseCalFat::upsert($dados, ['codpro', 'id_basecalfat'],
+        BaseCalFat::upsert($dados, ['id_basecalfat'],
                 [
+                    "id_basecalfat",
                     "codpro",
                     "base_cont",
                     "bas_en_cont",
@@ -54,7 +55,6 @@ class BaseCalFatService {
                     "mot_des_icms",
                     "cbenef",
                     "carga_liquida",
-                    "id_basecalfat",
                     "codigo_ce_st",
                     "observacao",
                     "operation"
