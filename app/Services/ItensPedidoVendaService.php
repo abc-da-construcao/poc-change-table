@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\ItensPedido;
+use App\Models\ItensPedidoVenda;
 use Illuminate\Support\Facades\DB;
 
-class ItensPedidoService {
+class ItensPedidoVendaService {
     
-    const NOME_CONFIGURACOES = 'change_tracking_itens_pedido';
+    const NOME_CONFIGURACOES = 'change_tracking_itens_pedido_venda';
 
   
     /**
@@ -119,7 +119,7 @@ class ItensPedidoService {
      */
     public static function flushItensPedidos($dados) {
 
-        ItensPedido::upsert($dados, ['item', 'pedido_id'],
+        ItensPedidoVenda::upsert($dados, ['item', 'pedido_id'],
                 [
                     "numped",
                     "pedido_id",
