@@ -106,7 +106,6 @@ class EstoqueService {
                         INNER JOIN produtocad pro ON pro.codpro = ct.codpro
                         LEFT JOIN itemforcad i ON i.codpro = ct.codpro
                         WHERE i.quantrec <> i.quant
-                        AND i.filial = '10'
                         GROUP BY pro.codpro,
                                  pro.dv,
                                  pro.codinterno,

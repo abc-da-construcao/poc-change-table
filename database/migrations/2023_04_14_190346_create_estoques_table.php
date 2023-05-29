@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->integer('codpro');
             $table->string('dv');
-            $table->smallInteger('filial');
+            $table->string('filial',2);
             $table->string('referencia');
             $table->double('estoque_atual', 8, 3)->nullable(true);
             $table->double('estoque_futuro', 8, 3)->nullable(true);
