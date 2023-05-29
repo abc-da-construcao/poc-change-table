@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->string('referencia');
             $table->double('estoque_atual', 8, 3)->nullable(true);
             $table->double('estoque_futuro', 8, 3)->nullable(true);
+            $table->smallInteger('compras_1')->nullable(true)->comment('compra 15 dias')->default(0);
+            $table->smallInteger('compras_2')->nullable(true)->comment('compra 45 dias')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
