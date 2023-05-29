@@ -22,10 +22,10 @@ return new class extends Migration {
             $table->string("situacao", 1)->nullable(true);
             $table->string("TIPO", 3)->nullable(true);
 
-            $table->double("totven");
-            $table->double("freteorc")->nullable(true);
-            $table->double("taxanf")->nullable(true);
-            $table->double("OUTRASDESPESASINCLUSAS")->nullable(true);
+            $table->decimal("totven",15,2);
+            $table->decimal("freteorc",15,2)->nullable(true);
+            $table->decimal("taxanf",15,2)->nullable(true);
+            $table->decimal("OUTRASDESPESASINCLUSAS",15,2)->nullable(true);
             $table->double("TOTRECANTECIPADO")->nullable(true);
             $table->double("TROCO")->nullable(true);
             $table->double("VALORDOACAO")->nullable(true);

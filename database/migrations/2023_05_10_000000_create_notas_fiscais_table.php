@@ -244,7 +244,7 @@ return new class extends Migration {
             $table->double("comp_nf_saida_redzmanual")->nullable(true);
             $table->double("comp_nf_saida_flagpiscofins")->nullable(true);
             $table->double("comp_nf_saida_valoracrescimo")->nullable(true);
-            $table->double("comp_nf_saida_descontodevolucao")->nullable(true);
+            $table->decimal("comp_nf_saida_descontodevolucao",17,2)->nullable(true);
             $table->double("comp_nf_saida_descontosuframa")->nullable(true);
             $table->double("comp_nf_saida_etiquetaemitida")->nullable(true);
             $table->double("comp_nf_saida_flagpesoalterado")->nullable(true);

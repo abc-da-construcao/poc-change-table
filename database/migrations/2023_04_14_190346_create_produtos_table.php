@@ -26,7 +26,7 @@ return new class extends Migration {
                         $table->string('codpro_fabricante', 25)->nullable(true);
                         $table->string('un1', 3)->nullable(true);
                         $table->string('un2', 3)->nullable(true);
-                        $table->double('faconv', 9)->nullable(true);
+                        $table->decimal("faconv",15,8)->nullable(true);
                         $table->integer('cod_disponibilidade')->nullable(true);
                         $table->string('disponibilidade', 254)->nullable(true);
                         $table->string('classe', 14)->nullable(true);
@@ -55,8 +55,8 @@ return new class extends Migration {
                         $table->string('codigo_externo_pesquisa', 50)->nullable(true);
                         $table->string('oid_pesquisa', 50)->nullable(true);
                         $table->double('valor_custo')->nullable(true);
-                        $table->double('valor_subst_nf')->nullable(true);
-                        $table->double('valor_subst_ant')->nullable(true);
+                        $table->decimal("valor_subst_nf",20,4)->nullable(true);
+                        $table->decimal("valor_subst_ant",15,5)->nullable(true);
                         $table->double('perc_icms_compra')->nullable(true);
                         $table->double('aliq_icms_compra')->nullable(true);
                         $table->double('icms_sem_despesas_nao_inclusas')->nullable(true);

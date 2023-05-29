@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string("referencia", 254)->nullable(true);
             $table->integer("rpromocao")->nullable(true);
-            $table->double("oferta")->nullable(true);
+            $table->decimal("oferta",18,2)->nullable(true);
             $table->integer("oid_produto_promocao")->nullable(true);
             $table->double("qtde_ofertada")->nullable(true);
             $table->double("qtde_reservada")->nullable(true);
