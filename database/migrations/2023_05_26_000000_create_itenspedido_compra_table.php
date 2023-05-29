@@ -17,8 +17,8 @@ return new class extends Migration {
             
             $table->string("Item", 5)->nullable(true);
             $table->integer("numped");
-            
             $table->string("codpro", 5);
+            
             $table->string("dv", 1);
             $table->string("unid", 3);
             $table->string("filial", 2);
@@ -61,7 +61,7 @@ return new class extends Migration {
             $table->double("PERCICMS", 6, 2)->nullable(true);
             $table->double("PERCSUBSTRI", 6, 2)->nullable(true);
             
-              $table->unique(array('item', 'numped'));
+              $table->unique(array('Item', 'numped', 'codpro'));
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
