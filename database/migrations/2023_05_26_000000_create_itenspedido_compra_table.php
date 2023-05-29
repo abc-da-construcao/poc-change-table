@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id('indice');
             
             $table->string("Item", 5)->nullable(true);
-            $table->integer("numped");
+            $table->integer("numero_pedido");
             $table->string("codpro", 5);
             
             $table->string("dv", 1);
@@ -27,18 +27,18 @@ return new class extends Migration {
             $table->text("TextoTecnico")->nullable(true);
 
             $table->dateTime("DTPREVFAT")->nullable(true);
-            $table->dateTime("dtprevrec")->nullable(true);
+            $table->dateTime("data_previsao_recebimento")->nullable(true);
             $table->dateTime("dtpedido")->nullable(true);
 
             $table->integer("numord");
             $table->integer("ID");
             $table->integer("RSITUACAO")->nullable(true);
 
-            $table->decimal("quant", 13, 3);
+            $table->decimal("quantidade", 13, 3);
             $table->decimal("preco", 18, 5);
             $table->decimal("valoripi", 15, 2);
             $table->decimal("aliqipi", 6, 2);
-            $table->decimal("quantrec", 13, 3);
+            $table->decimal("quantidade_recebida", 13, 3);
             $table->decimal("valdesc", 15, 2);
             $table->decimal("txembal", 5, 2);
             $table->decimal("txsubst", 5, 2);
@@ -60,8 +60,12 @@ return new class extends Migration {
             $table->double("BASEICMS", 6, 2)->nullable(true);
             $table->double("PERCICMS", 6, 2)->nullable(true);
             $table->double("PERCSUBSTRI", 6, 2)->nullable(true);
+            $table->string("descr", 35)->nullable(true);
+            $table->integer("codfor")->nullable(true);
+            $table->string("FORNECEDOR", 254)->nullable(true);
+            $table->string("DOCUMENTO", 20)->nullable(true);
             
-              $table->unique(array('Item', 'numped', 'codpro'));
+              $table->unique(array('Item', 'numero_pedido', 'codpro'));
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();

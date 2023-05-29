@@ -17,16 +17,16 @@ class ItensPedidoCompraService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                 "SELECT
-                    i.numped,
+                    i.numped as numero_pedido,
                     i.codpro,
                     i.dv,
-                    i.quant,
+                    i.quant as quantidade,
                     i.unid,
                     i.preco,
                     i.valoripi,
                     i.aliqipi,
-                    i.quantrec,
-                    i.dtprevrec,
+                    i.quantrec as quantidade_recebida,
+                    i.dtprevrec as data_previsao_recebimento,
                     i.filial,
                     i.numord,
                     i.valdesc,
@@ -37,7 +37,7 @@ class ItensPedidoCompraService {
                     i.precobas,
                     i.valoricms,
                     i.aliqicms,
-                    i.referencia,
+                    pro.codinterno as referencia,
                     i.desccomer,
                     i.descfinan,
                     i.perdesc,
@@ -56,9 +56,15 @@ class ItensPedidoCompraService {
                     i.PERCSUBSTRI,
                     i.ID,
                     i.RSITUACAO,
-                    i.DTPREVFAT
+                    i.DTPREVFAT,
+                    pro.descr,
+                    pro.codfor,
+                    fnd.NOME as 'FORNECEDOR',
+                    fnd.CGC as 'DOCUMENTO'
                  FROM CHANGETABLE (CHANGES [ITEMFORCAD], :lastVersion) AS ct
-                 JOIN ITEMFORCAD i on i.numped = ct.numped and i.codpro = ct.codpro", ['lastVersion' => $lastVersion]);
+                 JOIN ITEMFORCAD i on i.numped = ct.numped and i.codpro = ct.codpro
+                 INNER JOIN produtocad pro ON pro.codpro = ct.codpro AND pro.dv = i.dv
+                 LEFT JOIN fornececad fnd ON pro.codfor = fnd.oid", ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
@@ -67,18 +73,18 @@ class ItensPedidoCompraService {
      */
     public static function flushItensPedidos($dados) {
 
-        ItensPedidoCompra::upsert($dados, ['Item', 'numped', 'codpro'],
+        ItensPedidoCompra::upsert($dados, ['Item', 'numero_pedido', 'codpro'],
                 [
-                    "numped",
+                    "numero_pedido",
                     "codpro",
                     "dv",
-                    "quant",
+                    "quantidade",
                     "unid",
                     "preco",
                     "valoripi",
                     "aliqipi",
-                    "quantrec",
-                    "dtprevrec",
+                    "quantidade_recebida",
+                    "data_previsao_recebimento",
                     "filial",
                     "numord",
                     "valdesc",
