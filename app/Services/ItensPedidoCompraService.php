@@ -17,8 +17,8 @@ class ItensPedidoCompraService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                 "SELECT
-                    i.numped as numero_pedido,
-                    i.codpro,
+                    ct.numped as numero_pedido,
+                    ct.codpro,
                     i.dv,
                     i.quant as quantidade,
                     i.unid,
@@ -60,10 +60,13 @@ class ItensPedidoCompraService {
                     pro.descr,
                     pro.codfor,
                     fnd.NOME as 'FORNECEDOR',
-                    fnd.CGC as 'DOCUMENTO'
+                    fnd.CGC as 'DOCUMENTO',
+                    ct.SYS_CHANGE_OPERATION AS 'last_operation',
+                    COALESCE(tc.commit_time, GETDATE()) AS 'last_commit_time'
                  FROM CHANGETABLE (CHANGES [ITEMFORCAD], :lastVersion) AS ct
-                 JOIN ITEMFORCAD i on i.numped = ct.numped and i.codpro = ct.codpro
-                 INNER JOIN produtocad pro ON pro.codpro = ct.codpro AND pro.dv = i.dv
+                 LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+                 LEFT JOIN ITEMFORCAD i on i.numped = ct.numped and i.codpro = ct.codpro
+                 LEFT JOIN produtocad pro ON pro.codpro = ct.codpro AND pro.dv = i.dv
                  LEFT JOIN fornececad fnd ON pro.codfor = fnd.oid", ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }

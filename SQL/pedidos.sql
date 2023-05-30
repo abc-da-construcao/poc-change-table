@@ -1,5 +1,5 @@
 SELECT
-    p.numped,
+    ct.numped,
     p.codclie,
     p.numorc,
     p.codvend,
@@ -13,12 +13,12 @@ SELECT
     p.obs,
     p.numord,
     p.tpo,
-    p.filial,
+    ct.filial,
     p.referencia,
     CASE
         WHEN (p.referencia is not null) AND (p.referencia <> '') AND (p.referencia <> ' ')  
             THEN p.referencia
-        ELSE CAST(p.numped AS VARCHAR(100))
+        ELSE CAST(ct.numped AS VARCHAR(100))
     END AS pedido_id,
     p.moedcor,
     p.dataatu,
@@ -131,7 +131,10 @@ SELECT
     TRIM(lower((select top 1 co.VALOR 
               from COMUNICACAO_V co 
               where co.RITEM = cli.oid and 
-                   co.RTIPO = :rtipo))) as email_cliente
-FROM CHANGETABLE (CHANGES [PEDICLICAD], :lastVersion) AS c
-JOIN PEDICLICAD p on p.numped = c.numped
-JOIN clientecad cli on cli.oid = p.codclie
+                   co.RTIPO = :rtipo))) as email_cliente,
+    ct.SYS_CHANGE_OPERATION AS 'last_operation',
+    COALESCE(tc.commit_time, GETDATE()) AS 'last_commit_time'
+FROM CHANGETABLE (CHANGES [PEDICLICAD], :lastVersion) AS ct
+LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+LEFT JOIN PEDICLICAD p on p.numped = ct.numped and p.filial = ct.filial
+LEFT JOIN clientecad cli on cli.oid = p.codclie
