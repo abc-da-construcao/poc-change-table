@@ -22,6 +22,9 @@ return new class extends Migration {
 
             $table->integer("oidempresa");
             $table->integer("oid");
+            
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
 
             $table->unique(array('oid'));
             $table->timestamp('created_at')->useCurrent();

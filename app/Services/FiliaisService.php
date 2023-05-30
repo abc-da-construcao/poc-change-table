@@ -15,15 +15,18 @@ class FiliaisService {
     public static function getLastChagingTrackingERP($lastVersion) {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
-                'SELECT
+                "SELECT
                     f.codempresa,
                     f.filial,
                     f.nome,
                     f.cgc,
                     f.oidempresa,
-                    f.oid
+                    ct.oid,
+                    ct.SYS_CHANGE_OPERATION AS last_operation,
+                    COALESCE(tc.commit_time, GETDATE()) AS last_commit_time
            FROM CHANGETABLE (CHANGES [FILIALCAD], :lastVersion) AS ct
-           JOIN FILIALCAD f on f.oid = ct.oid', ['lastVersion' => $lastVersion]);
+           LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+           LEFT JOIN FILIALCAD f on f.oid = ct.oid", ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
@@ -40,6 +43,8 @@ class FiliaisService {
                     "cgc",
                     "oidempresa",
                     "oid",
+                    "last_operation",
+                    "last_commit_time"
         ]);
     }
 
