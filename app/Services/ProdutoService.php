@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Configuracoes;
 use App\Models\Produto;
 use Illuminate\Support\Facades\DB;
 
@@ -112,11 +111,7 @@ class ProdutoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        CASE
-                            WHEN (Pro.Codpro is not null)
-                                THEN Pro.Codpro
-                            ELSE ct.Codpro
-                        END AS 'codpro',
+                        ct.codpro AS 'codpro',
                         ct.dv AS 'dv',
                         ct.SYS_CHANGE_OPERATION AS 'last_operation',
                         COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time',
@@ -193,7 +188,7 @@ class ProdutoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        pro.Codpro AS 'codpro',
+                        ct.Codpro AS 'codpro',
                         pro.dv,
                         pro.codfor AS 'id_fornecedor',
                         ct.SYS_CHANGE_OPERATION AS 'last_operation',
@@ -206,8 +201,8 @@ class ProdutoService {
                         cmp.comprimentocm AS 'comprimento'
                     FROM CHANGETABLE (CHANGES [COMPLEMENTOPRODUTO], :lastVersion) AS ct
                     LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
-                    INNER JOIN produtocad pro on pro.codpro = ct.codpro
-                    INNER JOIN complementoproduto cmp ON pro.codpro = cmp.codpro"
+                    LEFT JOIN produtocad pro on pro.codpro = ct.codpro
+                    LEFT JOIN complementoproduto cmp ON pro.codpro = cmp.codpro"
                     ,['lastVersion' => $lastVersionProdutoComplemento]);
 
         return json_decode(json_encode($dados), true);
@@ -237,8 +232,8 @@ class ProdutoService {
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23160' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'icms_sem_despesas_nao_inclusas'
                     FROM CHANGETABLE (CHANGES [PESQUISA], :lastVersion) AS ct
                     LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
-                    INNER JOIN PESQUISA pq on pq.OID  = ct.oid
-                    INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO
+                    LEFT JOIN PESQUISA pq on pq.OID  = ct.oid
+                    LEFT JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO
                     WHERE criadoem = (SELECT TOP(1) ps.criadoem FROM PESQUISA ps  WHERE ps.codigoexterno = pro.codpro ORDER BY ps.criadoem DESC)"
                     ,['lastVersion' => $lastVersionProdutoComplemento]);
 

@@ -1,10 +1,6 @@
 -- busca produtos que sofreram alterações na tabela PRODUTOCAD
 SELECT
-	CASE
-		WHEN (Pro.Codpro is not null)
-			THEN Pro.Codpro
-		ELSE ct.Codpro
-	END AS 'codpro',
+	ct.codpro AS 'codpro',
     ct.dv AS 'dv',
     ct.SYS_CHANGE_OPERATION AS 'last_operation',
     COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time',
