@@ -138,6 +138,10 @@ return new class extends Migration {
             $table->string('ENDERECOFATURA', 1)->nullable(true);
             $table->double('CONTRATO')->nullable(true);
             $table->double('EMPENHO')->nullable(true);
+            
+            $table->string('last_operation', 2);
+            $table->dateTime('last_commit_time');
+            
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
