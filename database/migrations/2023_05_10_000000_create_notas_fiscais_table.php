@@ -271,6 +271,9 @@ return new class extends Migration {
             $table->datetime("comp_nf_saida_dhinutilizaþòo")->nullable(true);
             $table->datetime("comp_nf_saida_dhcontingencia")->nullable(true);
             $table->datetime("comp_nf_saida_dhinutilizacao")->nullable(true);
+            
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
 
             $table->unique(array('numord'));
 
