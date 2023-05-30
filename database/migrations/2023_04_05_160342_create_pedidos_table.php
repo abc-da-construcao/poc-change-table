@@ -139,7 +139,7 @@ return new class extends Migration {
             $table->double('CONTRATO')->nullable(true);
             $table->double('EMPENHO')->nullable(true);
             
-            $table->string('last_operation', 2);
+            $table->string('last_operation', 1);
             $table->dateTime('last_commit_time');
             
             $table->timestamp('created_at')->useCurrent();
