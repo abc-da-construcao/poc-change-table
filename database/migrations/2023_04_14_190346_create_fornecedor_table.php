@@ -27,7 +27,8 @@ return new class extends Migration {
             $table->string('cid')->nullable(true);
             $table->string('observacao',254)->nullable(true);
             $table->integer('excluido')->nullable(true);
-            $table->string('operation')->nullable(true);
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique

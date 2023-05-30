@@ -31,7 +31,8 @@ return new class extends Migration {
             $table->integer('id_erp')->nullable(true);
             $table->dateTime('atualizadoem')->nullable(true);
             $table->integer('codigo_gnre')->nullable(true);
-            $table->string('operation')->nullable(true);
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique

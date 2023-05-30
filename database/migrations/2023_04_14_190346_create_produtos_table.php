@@ -17,7 +17,6 @@ return new class extends Migration {
                         $table->integer('codpro');
                         $table->string('dv')->nullable(true);
                         $table->integer('id_fornecedor')->nullable(true);
-                        $table->string('operation')->nullable(true);
                         $table->string('referencia', 17)->nullable(true);
                         $table->string('nome_original', 100)->nullable(true);
                         $table->string('ncm', 14)->nullable(true);
@@ -49,7 +48,7 @@ return new class extends Migration {
                         $table->string('cf', 4)->nullable(true);
                         $table->string('codigo_mens', 2)->nullable(true);
                         $table->string('tributacao_mg')->nullable(true);
-                        $table->string('origem', 1)->nullable(true);
+                        $table->string('origem', 254)->nullable(true);
                         $table->string('ref_end', 17)->nullable(true);
                         $table->string('cod_interno_produtocad', 50)->nullable(true);
                         $table->string('codigo_externo_pesquisa', 50)->nullable(true);
@@ -60,10 +59,10 @@ return new class extends Migration {
                         $table->double('perc_icms_compra')->nullable(true);
                         $table->double('aliq_icms_compra')->nullable(true);
                         $table->double('icms_sem_despesas_nao_inclusas')->nullable(true);
-                        
+                        $table->string('last_operation', 1);
+                        $table->dateTime('last_commit_time');
                         $table->timestamp('created_at')->useCurrent();
                         $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
-
                         //unique
                         $table->unique(['codpro', 'dv', 'id_fornecedor', 'codigo_externo_pesquisa']);
                         $table->unique(['codpro', 'dv', 'id_fornecedor']);

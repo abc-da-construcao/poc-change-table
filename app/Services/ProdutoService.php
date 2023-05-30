@@ -21,7 +21,8 @@ class ProdutoService {
                                 [
                                     "codpro",
                                     "dv",
-                                    "operation",
+                                    "last_operation",
+                                    "last_commit_time",
                                     "referencia",
                                     "nome_original",
                                     "ncm",
@@ -68,7 +69,8 @@ class ProdutoService {
                                     "codpro",
                                     "dv",
                                     "id_fornecedor",
-                                    "operation",
+                                    "last_operation",
+                                    "last_commit_time",
                                     "nome_original",
                                     "venda_minima",
                                     "codpro_fabricante",
@@ -91,7 +93,8 @@ class ProdutoService {
                                     "codigo_externo_pesquisa",
                                     "oid_pesquisa",
                                     "cod_interno_produtocad",
-                                    "operation",
+                                    "last_operation",
+                                    "last_commit_time",
                                     "valor_custo",
                                     "valor_subst_nf",
                                     "valor_subst_ant",
@@ -109,9 +112,14 @@ class ProdutoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        Pro.Codpro AS 'codpro',
+                        CASE
+                            WHEN (Pro.Codpro is not null)
+                                THEN Pro.Codpro
+                            ELSE ct.Codpro
+                        END AS 'codpro',
                         ct.dv AS 'dv',
-                        ct.SYS_CHANGE_OPERATION AS 'operation',
+                        ct.SYS_CHANGE_OPERATION AS 'last_operation',
+                        COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time',
                         TRIM(CONCAT(Pro.codinterno, '')) AS 'referencia',
                         cmp.descricaolonga AS 'nome_original',
                         TRIM(pro.codigoncm) AS 'ncm',
@@ -157,20 +165,21 @@ class ProdutoService {
                             WHEN 'A' THEN 'ST'
                             WHEN 'T' THEN 'D/C'
                             WHEN 'B' THEN 'D/C_BASE_REDUZIDA'
-                            WHEN 'I' THEN 'ISENTO' ------- ISENTO -----
+                            WHEN 'I' THEN 'ISENTO'
                         END AS 'tributacao_mg',
                         CASE
-                            WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'N'
-                            WHEN pro.origem IN ('I', 'G', 'H')              THEN 'I'
-                            WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'N'
-                            WHEN pro.origem in ('1', '2', '6' , '7')        THEN 'I'
-                            END AS 'origem',
+                            WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'Nacional'
+                            WHEN pro.origem IN ('I', 'G', 'H')              THEN 'Importado'
+                            WHEN pro.origem IN ( '0', '3', '4', '5', '8')   THEN 'Nacional'
+                            WHEN pro.origem in ('1', '2', '6' , '7')            THEN 'Importado'
+                        END AS 'origem',
                         RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
                     FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
-                    INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
-                    INNER JOIN complementoproduto CMP ON pro.codpro = cmp.codpro
-                    INNER JOIN fornececad fnd ON pro.codfor = fnd.oid
-                    INNER JOIN item ite ON pro.disponibilidade = ite.oid
+                    LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+                    LEFT JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
+                    LEFT JOIN complementoproduto CMP ON pro.codpro = cmp.codpro
+                    LEFT JOIN fornececad fnd ON pro.codfor = fnd.oid
+                    LEFT JOIN item ite ON pro.disponibilidade = ite.oid
                     LEFT JOIN tabmenscad tab ON tab.cm = pro.cm"
                     ,['lastVersion' => $lastVersionProduto]);
 
@@ -187,15 +196,16 @@ class ProdutoService {
                         pro.Codpro AS 'codpro',
                         pro.dv,
                         pro.codfor AS 'id_fornecedor',
-                        ct.SYS_CHANGE_OPERATION AS 'operation',
+                        ct.SYS_CHANGE_OPERATION AS 'last_operation',
+                        COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time',
                         cmp.descricaolonga AS 'nome_original',
                         cmp.vendaminima AS 'venda_minima',
                         CONCAT(cmp.CODPROFABRICANTE, '') AS 'codpro_fabricante',
                         cmp.alturacm AS 'altura',
                         cmp.larguracm AS 'largura',
-                        cmp.comprimentocm AS 'comprimento',
-                        ct.SYS_CHANGE_OPERATION AS 'operation'
+                        cmp.comprimentocm AS 'comprimento'
                     FROM CHANGETABLE (CHANGES [COMPLEMENTOPRODUTO], :lastVersion) AS ct
+                    LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
                     INNER JOIN produtocad pro on pro.codpro = ct.codpro
                     INNER JOIN complementoproduto cmp ON pro.codpro = cmp.codpro"
                     ,['lastVersion' => $lastVersionProdutoComplemento]);
@@ -211,12 +221,14 @@ class ProdutoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        Pro.Codpro 			AS 'codpro',
+                        pro.Codpro 			AS 'codpro',
                         pro.dv 				AS 'dv',
                         pro.codfor 		AS 'id_fornecedor',
                         pro.codinterno		AS 'cod_interno_produtocad',
                         pq.CODIGOEXTERNO	AS 'codigo_externo_pesquisa',
                         pq.OID				AS 'oid_pesquisa',
+                        ct.SYS_CHANGE_OPERATION AS 'last_operation',
+                        COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time',
                         ISNULL((SELECT TOP(1) pq.valorcusto FROM pesquisa_r pq WHERE pq.criadoem <= GETDATE()  AND pq.codigoexterno = pro.codpro ORDER BY criadoem DESC),0) AS 'valor_custo',
                         ISNULL((SELECT TOP(1) pq.Valorsubsttrib FROM pesquisa_r pq WHERE pq.criadoem <= GETDATE()  AND pq.codigoexterno = pro.codpro ORDER BY criadoem DESC),0) AS 'valor_subst_nf',
                         ISNULL((SELECT TOP(1) pq.Valtribantecipada FROM pesquisa_r pq WHERE pq.criadoem <= GETDATE() AND pq.codigoexterno = pro.codpro ORDER BY criadoem DESC),0) AS 'valor_subst_ant',
@@ -224,6 +236,7 @@ class ProdutoService {
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23198' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'aliq_icms_compra',
                         ISNULL((SELECT TOP 1 valor FROM composicao_r WHERE rtipopesquisa = '23160' AND rpesquisa IN (SELECT TOP 1 OID FROM pesquisa_r WHERE codigoexterno = pro.codpro ORDER BY criadoem DESC)),0) AS 'icms_sem_despesas_nao_inclusas'
                     FROM CHANGETABLE (CHANGES [PESQUISA], :lastVersion) AS ct
+                    LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
                     INNER JOIN PESQUISA pq on pq.OID  = ct.oid
                     INNER JOIN PRODUTOCAD pro on pro.codinterno = pq.CODIGOEXTERNO
                     WHERE criadoem = (SELECT TOP(1) ps.criadoem FROM PESQUISA ps  WHERE ps.codigoexterno = pro.codpro ORDER BY ps.criadoem DESC)"

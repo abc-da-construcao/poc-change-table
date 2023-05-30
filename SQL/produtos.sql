@@ -1,8 +1,13 @@
 -- busca produtos que sofreram alterações na tabela PRODUTOCAD
 SELECT
-    Pro.Codpro AS 'codpro',
+	CASE
+		WHEN (Pro.Codpro is not null)
+			THEN Pro.Codpro
+		ELSE ct.Codpro
+	END AS 'codpro',
     ct.dv AS 'dv',
-    ct.SYS_CHANGE_OPERATION AS 'operation',
+    ct.SYS_CHANGE_OPERATION AS 'last_operation',
+    COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time',
     TRIM(CONCAT(Pro.codinterno, '')) AS 'referencia',
     cmp.descricaolonga AS 'nome_original',
     TRIM(pro.codigoncm) AS 'ncm',
@@ -48,7 +53,7 @@ SELECT
         WHEN 'A' THEN 'ST'
         WHEN 'T' THEN 'D/C'
         WHEN 'B' THEN 'D/C_BASE_REDUZIDA'
-        WHEN 'I' THEN 'ISENTO' ------- ISENTO -----
+        WHEN 'I' THEN 'ISENTO'
     END AS 'tributacao_mg',
     CASE
         WHEN pro.origem IN ( 'N', 'M', 'L')             THEN 'Nacional'
@@ -58,10 +63,11 @@ SELECT
     END AS 'origem',
     RIGHT(TRIM(pro.codinterno), 1) AS 'ref_end'
 FROM CHANGETABLE (CHANGES [PRODUTOCAD], :lastVersion) AS ct
-INNER JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
-INNER JOIN complementoproduto CMP ON pro.codpro = cmp.codpro
-INNER JOIN fornececad fnd ON pro.codfor = fnd.oid
-INNER JOIN item ite ON pro.disponibilidade = ite.oid
+LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+LEFT JOIN produtocad pro on pro.codpro = ct.codpro and pro.dv = ct.dv
+LEFT JOIN complementoproduto CMP ON pro.codpro = cmp.codpro
+LEFT JOIN fornececad fnd ON pro.codfor = fnd.oid
+LEFT JOIN item ite ON pro.disponibilidade = ite.oid
 LEFT JOIN tabmenscad tab ON tab.cm = pro.cm;
 
 
