@@ -14,22 +14,22 @@ return new class extends Migration {
     public function up() {
         Schema::create('base_cal_fats', function (Blueprint $table) {
             $table->id()->unique();
-            $table->integer('id_basecalfat');
+            $table->integer('id_basecalfat')->nullable(true);
             $table->string('codpro',5)->nullable(true);
             $table->decimal('base_cont',10,4)->nullable(true);
             $table->decimal('bas_en_cont',10,4)->nullable(true);
-            $table->string('cod_mensagem', 2);
+            $table->string('cod_mensagem', 2)->nullable(true);
             $table->decimal('aliq_cont',6,2)->nullable(true);
             $table->decimal('aliq_n_cont',6,2)->nullable(true);
             $table->decimal('perc_subtri',15,2)->nullable(true);
-            $table->string('estado_origem',2);
-            $table->string('estado_destino',2);
-            $table->string('base_calc_produto', 1);
-            $table->string('aliquota_produto',1);
-            $table->string('tpo',30);
-            $table->string('cfo',4);
+            $table->string('estado_origem',2)->nullable(true);
+            $table->string('estado_destino',2)->nullable(true);
+            $table->string('base_calc_produto', 1)->nullable(true);
+            $table->string('aliquota_produto',1)->nullable(true);
+            $table->string('tpo',30)->nullable(true);
+            $table->string('cfo',4)->nullable(true);
             $table->integer('classificacao_ cliente')->nullable(true);
-            $table->string('tipo_Cliente',1);
+            $table->string('tipo_Cliente',1)->nullable(true);;
             $table->integer('perc_base_despesas')->nullable(true);
             $table->string('cffoncont',4)->nullable(true);
             $table->string('codmensncont',2)->nullable(true);
@@ -40,7 +40,7 @@ return new class extends Migration {
             $table->integer('diferencial_aliquota_st')->nullable(true);
             $table->string('filial',2)->nullable(true);
             $table->string('tipo_subst_venda',1)->nullable(true);
-            $table->string('tipo_tributacao',1);
+            $table->string('tipo_tributacao',1)->nullable(true);
             $table->string('aliquota_estado',1)->nullable(true);
             $table->decimal('base_cred_icms_st',8,4)->nullable(true);
             $table->decimal('base_deb_icms_st',8,4)->nullable(true);
@@ -53,7 +53,7 @@ return new class extends Migration {
             $table->string('mot_des_icms',2)->nullable(true);
             $table->string('cbenef',10)->nullable(true);
             $table->integer('carga_liquida')->nullable(true);
-            $table->string('codigo_ce_st',14);
+            $table->string('codigo_ce_st',14)->nullable(true);
             $table->string('observacao',254)->nullable(true);
             $table->string('last_operation', 1);
             $table->dateTime('last_commit_time');
