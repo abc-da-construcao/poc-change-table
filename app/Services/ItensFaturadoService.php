@@ -15,20 +15,20 @@ class ItensFaturadoService {
     public static function getLastChagingTrackingERP($lastVersion) {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
-                'SELECT
+                "SELECT
                     i.Usuario,
                     i.Estacao,
                     i.Filial,
                     CASE
-                       WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
+                       WHEN (p.referencia is not null) AND (p.referencia <> '') AND (p.referencia <> ' ')  
                            THEN p.referencia
                        ELSE CAST(p.numped AS VARCHAR(100))
                     END AS pedido_id,
                     i.Pedido,
                     i.Codpro,
-                    i.Item,
+                    ct.Item,
                     i.Quant,
-                    i.Reservado,
+                    ct.Reservado,
                     i.Faturado,
                     i.Cancelado,
                     i.NUMEROLISTA,
@@ -50,10 +50,13 @@ class ItensFaturadoService {
                     i.USUARIOALTEROUSITMANUT,
                     i.ESTACAOALTEROUSITMANUT,
                     i.PROGRAMAALTEROUSITMANUT,
-                    i.DATAALTEROUSITMANUT
+                    i.DATAALTEROUSITMANUT,
+                    ct.SYS_CHANGE_OPERATION AS last_operation,
+                    COALESCE(tc.commit_time, GETDATE()) AS last_commit_time
            FROM CHANGETABLE (CHANGES [ITEMFATURADO], :lastVersion) AS ct
-           JOIN ITEMFATURADO i on i.item = ct.item and i.reservado = ct.reservado
-           JOIN PEDICLICAD p on p.numped = i.pedido', ['lastVersion' => $lastVersion]);
+           LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+           LEFT JOIN ITEMFATURADO i on i.item = ct.item and i.reservado = ct.reservado
+           LEFT JOIN PEDICLICAD p on p.numped = i.pedido", ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
@@ -95,6 +98,8 @@ class ItensFaturadoService {
                     "ESTACAOALTEROUSITMANUT",
                     "PROGRAMAALTEROUSITMANUT",
                     "DATAALTEROUSITMANUT",
+                    "last_operation",
+                    "last_commit_time"
         ]);
     }
 
