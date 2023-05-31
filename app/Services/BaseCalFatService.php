@@ -57,7 +57,8 @@ class BaseCalFatService {
                     "carga_liquida",
                     "codigo_ce_st",
                     "observacao",
-                    "operation"
+                    "last_operation",
+                    "last_commit_time",
                 ]);
     }
 
@@ -69,6 +70,7 @@ class BaseCalFatService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
+                        bc.ID AS 'id_basecalfat',
                         bc.codpro AS 'codpro',
                         bc.basecont AS 'base_cont',
                         bc.basencont AS 'bas_en_cont',
@@ -107,11 +109,12 @@ class BaseCalFatService {
                         bc.MotDesICMS AS 'mot_des_icms',
                         bc.cBENEF AS 'cbenef',
                         bc.CARGALIQUIDA AS 'carga_liquida',
-                        bc.ID AS 'id_basecalfat',
                         bc.CODIGOCEST AS 'codigo_ce_st',
                         bc.OBSERVACAO AS 'observacao',
-                        ct.SYS_CHANGE_OPERATION AS 'operation'
+                        ct.SYS_CHANGE_OPERATION AS 'last_operation',
+                        COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time'
                     FROM CHANGETABLE (CHANGES [BASECALFAT], :lastVersion) AS ct
+                    LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
                     INNER JOIN BASECALFAT bc on bc.ID = ct.ID"
                     ,['lastVersion' => $lastVersionBaseCalFat]);
 

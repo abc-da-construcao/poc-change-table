@@ -1,5 +1,6 @@
 -- busca produtos que sofreram alterações na tabela PRODUTOCAD
 SELECT
+    bc.ID AS 'id_basecalfat',
     bc.codpro AS 'codpro',
     bc.basecont AS 'base_cont',
     bc.basencont AS 'bas_en_cont',
@@ -17,7 +18,7 @@ SELECT
     bc.TipoCliente AS 'tipo_Cliente',
     bc.PERCBASEDESPESAS AS 'perc_base_despesas',
     bc.CFONCONT AS 'cffoncont',
-    bc.CODMENSNCONT AS 'cod_mensncont',
+    bc.CODMENSNCONT AS 'codmensncont',
     bc.CF AS 'cf',
     bc.ALQCREDICMSST AS 'alq_cred_icms_st',
     bc.ALQDEBICMSST AS 'alq_deb_icms_st',
@@ -35,14 +36,15 @@ SELECT
     bc.BASECHEIADIFAL AS 'base_cheia_difal',
     bc.PERFCP AS 'perf_cp',
     bc.DesoneracaoICMS AS 'desoneracao_icms',
-    bc.MotDesICMS AS 'motdes_icms',
+    bc.MotDesICMS AS 'mot_des_icms',
     bc.cBENEF AS 'cbenef',
     bc.CARGALIQUIDA AS 'carga_liquida',
-    bc.ID AS 'id_basecalfat',
     bc.CODIGOCEST AS 'codigo_ce_st',
     bc.OBSERVACAO AS 'observacao',
-    ct.SYS_CHANGE_OPERATION AS 'operation'
+    ct.SYS_CHANGE_OPERATION AS 'last_operation',
+    COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time'
 FROM CHANGETABLE (CHANGES [BASECALFAT], :lastVersion) AS ct
+LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
 INNER JOIN BASECALFAT bc on bc.ID = ct.ID;
 
 

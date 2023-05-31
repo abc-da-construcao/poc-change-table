@@ -61,7 +61,7 @@ return new class extends Migration {
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique
             $table->unique(['id_basecalfat']);
-                    });
+        });
     }
 
     /**

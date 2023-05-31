@@ -33,7 +33,8 @@ class ClasseProdutoService {
                             "id_erp",
                             "atualizadoem",
                             "codigo_gnre",
-                            "operation"
+                            "last_operation",
+                            "last_commit_time"
                         ]);
                     }
 
@@ -62,10 +63,12 @@ class ClasseProdutoService {
                         cc.id as 'id_erp',
                         cc.atualizadoem,
                         cc.codigo_gnre,
-                        ct.SYS_CHANGE_OPERATION AS 'operation'
+                        ct.SYS_CHANGE_OPERATION AS 'last_operation',
+                        COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time'
                     FROM CHANGETABLE (CHANGES [CLASSIFCAD], :lastVersion) AS ct
-                    INNER JOIN CLASSIFCAD cc on cc.clasprod = ct.clasprod
-                    INNER JOIN PRODUTOCAD pro on pro.clasprod = cc.clasprod"
+                    LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+                    LEFT JOIN CLASSIFCAD cc on cc.clasprod = ct.clasprod
+                    LEFT JOIN PRODUTOCAD pro on pro.clasprod = cc.clasprod"
                     ,['lastVersion' => $lastVersionClassifCad]);
 
         return json_decode(json_encode($dados), true);
