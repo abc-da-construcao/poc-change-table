@@ -1,4 +1,3 @@
-
 SELECT
     i.Usuario,
     i.Estacao,
@@ -10,9 +9,9 @@ SELECT
     END AS pedido_id,
     i.Pedido,
     i.Codpro,
-    i.Item,
+    ct.Item,
     i.Quant,
-    i.Reservado,
+    ct.Reservado,
     i.Faturado,
     i.Cancelado,
     i.NUMEROLISTA,
@@ -34,7 +33,10 @@ SELECT
     i.USUARIOALTEROUSITMANUT,
     i.ESTACAOALTEROUSITMANUT,
     i.PROGRAMAALTEROUSITMANUT,
-    i.DATAALTEROUSITMANUT
+    i.DATAALTEROUSITMANUT,
+    ct.SYS_CHANGE_OPERATION AS last_operation,
+    COALESCE(tc.commit_time, GETDATE()) AS last_commit_time
 FROM CHANGETABLE (CHANGES [ITEMFATURADO], :lastVersion) AS ct
-JOIN ITEMFATURADO i on i.item = ct.item and i.reservado = ct.reservado
-JOIN PEDICLICAD p on p.numped = i.pedido
+LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+LEFT JOIN ITEMFATURADO i on i.item = ct.item and i.reservado = ct.reservado
+LEFT JOIN PEDICLICAD p on p.numped = i.pedido
