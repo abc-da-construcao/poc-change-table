@@ -14,7 +14,7 @@ return new class extends Migration {
     public function up() {
         Schema::create('itens_pedido_venda', function (Blueprint $table) {
             $table->id();
-            $table->string('pedido_id', 100);
+            $table->string('pedido_id', 100)->nullable(true);
             $table->integer("item")->nullable(true);
             $table->integer("numped")->nullable(true);
             $table->unique(array('item', 'pedido_id'));
@@ -103,6 +103,10 @@ return new class extends Migration {
             $table->integer("RCADASTROFAIXADESCONTO")->nullable(true);
             $table->double("PrecoOferta")->nullable(true);
             $table->double("VALORIPITX")->nullable(true);
+            
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
+            
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });

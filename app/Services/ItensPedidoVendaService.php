@@ -16,10 +16,10 @@ class ItensPedidoVendaService {
     public static function getLastChagingTrackingERP($lastVersion) {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
-                'SELECT
+                "SELECT
                     i.numped,
                     CASE
-                        WHEN (p.referencia is not null) AND (p.referencia <> \'\') AND (p.referencia <> \' \')  
+                        WHEN (p.referencia is not null) AND (p.referencia <> '') AND (p.referencia <> ' ')  
                             THEN p.referencia
                         ELSE CAST(p.numped AS VARCHAR(100))
                     END AS pedido_id,
@@ -52,7 +52,7 @@ class ItensPedidoVendaService {
                     i.qtddisplib,
                     i.precostx,
                     i.tpa_cod,
-                    i.item,
+                    ct.item,
                     i.faconv,
                     i.preconf,
                     i.precocomp,
@@ -107,10 +107,13 @@ class ItensPedidoVendaService {
                     i.PERCFAIXADESCONTO,
                     i.RCADASTROFAIXADESCONTO,
                     i.PrecoOferta,
-                    i.VALORIPITX
+                    i.VALORIPITX,
+                    ct.SYS_CHANGE_OPERATION AS last_operation,
+                    COALESCE(tc.commit_time, GETDATE()) AS last_commit_time
            FROM CHANGETABLE (CHANGES [ItemCliCad], :lastVersion) AS ct
-           JOIN ITEMCLICAD i on i.item = ct.item
-           JOIN PEDICLICAD p on p.numped = i.numped', ['lastVersion' => $lastVersion]);
+           LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
+           LEFT JOIN ITEMCLICAD i on i.item = ct.item
+           LEFT JOIN PEDICLICAD p on p.numped = i.numped", ['lastVersion' => $lastVersion]);
         return json_decode(json_encode($dados), true);
     }
 
@@ -208,6 +211,8 @@ class ItensPedidoVendaService {
                     "RCADASTROFAIXADESCONTO",
                     "PrecoOferta",
                     "VALORIPITX",
+                    "last_operation",
+                    "last_commit_time"
         ]);
     }
 
