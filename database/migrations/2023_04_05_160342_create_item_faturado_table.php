@@ -25,8 +25,8 @@ return new class extends Migration {
             $table->string("PROGRAMAALTEROUSITMANUT", 100)->nullable(true);
 
             $table->integer("Item");
-            $table->integer("ID");
-            $table->string('pedido_id', 100);
+            $table->integer("ID")->nullable(true);
+            $table->string('pedido_id', 100)->nullable(true);
             $table->integer("Pedido")->nullable(true);
             $table->integer("NUMEROLISTA")->nullable(true);
             $table->integer("ORDEMENTREGA")->nullable(true);
@@ -36,7 +36,7 @@ return new class extends Migration {
             $table->integer("ORDEMCARGA")->nullable(true);
             $table->integer("CARGAROTEIRIZADOR")->nullable(true);
 
-            $table->double("ROTEIRIZADOR");
+            $table->double("ROTEIRIZADOR")->nullable(true);
             $table->double("Quant")->nullable(true);
             $table->double("VIAORDEMSEPARACAO")->nullable(true);
 
@@ -48,6 +48,9 @@ return new class extends Migration {
             $table->dateTime("DTINICIOSEPARACAO")->nullable(true);
             $table->dateTime("DTFIMSEPARACAO")->nullable(true);
             $table->dateTime("DATAALTEROUSITMANUT")->nullable(true);
+            
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
