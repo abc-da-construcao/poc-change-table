@@ -30,6 +30,8 @@ return new class extends Migration {
             $table->double("por")->nullable(true);
             $table->string("desc_area_venda", 40)->nullable(true);
                     
+            $table->string('last_operation', 1);
+            $table->dateTime('last_commit_time');
             
             $table->unique(array('referencia','filial'));
 
