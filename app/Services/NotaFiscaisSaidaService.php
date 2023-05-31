@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\NotasFiscais;
+use App\Models\NotasFiscaisSaida;
 use Illuminate\Support\Facades\DB;
 
-class NotaFiscaisService {
+class NotaFiscaisSaidaService {
 
-    const NOME_CONFIGURACOES = 'change_tracking_notas_fiscais';
-    const NOME_CONFIGURACOES_COMPLEMENTO = 'change_tracking_notas_fiscais_complemento';
+    const NOME_CONFIGURACOES = 'change_tracking_notas_fiscais_saida';
+    const NOME_CONFIGURACOES_COMPLEMENTO = 'change_tracking_notas_fiscais_saida_complemento';
 
     /**
      * busca as ultimas modificações da tabela no ERP
@@ -186,7 +186,7 @@ class NotaFiscaisService {
      */
     public static function flushINotaFiscal($dados) {
 
-        NotasFiscais::upsert($dados, ['numord'],
+        NotasFiscaisSaida::upsert($dados, ['numord'],
                 [
                     "numnota",
                     "serie",
@@ -469,7 +469,7 @@ class NotaFiscaisService {
      */
     public static function flushIComplementoNotaFiscal($dados) {
 
-        NotasFiscais::upsert($dados, ['numord'],
+        NotasFiscaisSaida::upsert($dados, ['numord'],
                 [
                     "comp_nf_saida_baseicmdestacado",
                     "comp_nf_saida_codigoregiao",

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ItensNotaFiscal extends Model {
+class ItensNotaFiscalSaida extends Model {
 
     use HasFactory;
 
@@ -16,6 +16,6 @@ class ItensNotaFiscal extends Model {
      *
      * @var string
      */
-    protected $table = 'itens_nota_fiscal';
+    protected $table = 'itens_nota_fiscal_saida';
 
 }
