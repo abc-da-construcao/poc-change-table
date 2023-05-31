@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\NotaFiscaisService;
-use App\Services\ItensNotaFiscalService;
+use App\Services\NotaFiscaisSaidaService;
+use App\Services\ItensNotaFiscalSaidaService;
 use App\Services\ChangeTrackingService;
 
-class NotasFiscaisController extends Controller {
+class NotasFiscaisSaidaController extends Controller {
 
     public function notasFiscais() {
         try {
@@ -14,13 +14,13 @@ class NotasFiscaisController extends Controller {
             //NOTAS FISCAIS
             //------------------------------------------------------------------
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = ChangeTrackingService::getLastVersionControle(NotaFiscaisService::NOME_CONFIGURACOES);
+            $lastVersion = ChangeTrackingService::getLastVersionControle(NotaFiscaisSaidaService::NOME_CONFIGURACOES);
 
             //Busco a última versão do change tracking do SQL Server
             $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
-            $notasFiscaisERP = NotaFiscaisService::getLastChagingTrackingERP($lastVersion);
+            $notasFiscaisERP = NotaFiscaisSaidaService::getLastChagingTrackingERP($lastVersion);
 
             $in = '';
             $numord = [];
@@ -34,44 +34,44 @@ class NotasFiscaisController extends Controller {
                     $numord[] = $value['numord'];
                 }
                 //add/update na tabela "espelho"
-                NotaFiscaisService::flushINotaFiscal($chunk);
+                NotaFiscaisSaidaService::flushINotaFiscal($chunk);
             }
 
             if (count($numord) > 0) {
                 //upinsert itens da nota
-                $itensNf = ItensNotaFiscalService::getItensNF($numord, $in);
+                $itensNf = ItensNotaFiscalSaidaService::getItensNF($numord, $in);
                 $chunksNF = array_chunk($itensNf, 500);
                 foreach ($chunksNF as $chunk) {
                     //add/update na tabela "espelho"
-                    ItensNotaFiscalService::flushItensNF($chunk);
+                    ItensNotaFiscalSaidaService::flushItensNF($chunk);
                 }
             }
 
             /* atualiza na tabela de configurações */
-            ChangeTrackingService::updateLastTrackingTable($updateVersion, NotaFiscaisService::NOME_CONFIGURACOES);
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, NotaFiscaisSaidaService::NOME_CONFIGURACOES);
 
             //------------------------------------------------------------------
             //COMPLEMENTO NF SAIDA
             //------------------------------------------------------------------
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersionComplemento = ChangeTrackingService::getLastVersionControle(NotaFiscaisService::NOME_CONFIGURACOES_COMPLEMENTO);
+            $lastVersionComplemento = ChangeTrackingService::getLastVersionControle(NotaFiscaisSaidaService::NOME_CONFIGURACOES_COMPLEMENTO);
 
             //Busco a última versão do change tracking do SQL Server
             $updateVersionComplemento = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
-            $notasFiscaisERPComplemento = NotaFiscaisService::getLastChagingTrackingERPcomplementosNF($lastVersionComplemento);
+            $notasFiscaisERPComplemento = NotaFiscaisSaidaService::getLastChagingTrackingERPcomplementosNF($lastVersionComplemento);
 
             //upinsert nota fiscal
             $chunksComplemento = array_chunk($notasFiscaisERPComplemento, 500);
             foreach ($chunksComplemento as $chunk) {
                
                 //add/update na tabela "espelho"
-                NotaFiscaisService::flushIComplementoNotaFiscal($chunk);
+                NotaFiscaisSaidaService::flushIComplementoNotaFiscal($chunk);
             }
 
             /* atualiza na tabela de configurações */
-            ChangeTrackingService::updateLastTrackingTable($updateVersionComplemento, NotaFiscaisService::NOME_CONFIGURACOES_COMPLEMENTO);
+            ChangeTrackingService::updateLastTrackingTable($updateVersionComplemento, NotaFiscaisSaidaService::NOME_CONFIGURACOES_COMPLEMENTO);
             
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {

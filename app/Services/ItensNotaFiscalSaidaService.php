@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\ItensNotaFiscal;
+use App\Models\ItensNotaFiscalSaida;
 use Illuminate\Support\Facades\DB;
 
-class ItensNotaFiscalService {
+class ItensNotaFiscalSaidaService {
 
     /**
      * consulta os itens da nf
@@ -81,7 +81,7 @@ class ItensNotaFiscalService {
      */
     public static function flushItensNF($dados) {
 
-        ItensNotaFiscal::upsert($dados, ['numord', 'codpro', 'dv', 'ITEM'],
+        ItensNotaFiscalSaida::upsert($dados, ['numord', 'codpro', 'dv', 'ITEM'],
                 [
                     "numnota",
                     "serie",

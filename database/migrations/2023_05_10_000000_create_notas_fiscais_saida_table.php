@@ -12,7 +12,7 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('notas_fiscais', function (Blueprint $table) {
+        Schema::create('notas_fiscais_saida', function (Blueprint $table) {
             $table->id();
             $table->string("numnota", 13)->nullable(true);
             $table->string("serie", 3)->nullable(true);
@@ -288,6 +288,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('notas_fiscais');
+        Schema::dropIfExists('notas_fiscais_saida');
     }
 };
