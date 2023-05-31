@@ -115,7 +115,7 @@ class BaseCalFatService {
                         COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time'
                     FROM CHANGETABLE (CHANGES [BASECALFAT], :lastVersion) AS ct
                     LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
-                    INNER JOIN BASECALFAT bc on bc.ID = ct.ID"
+                    LEFT JOIN BASECALFAT bc on bc.ID = ct.ID"
                     ,['lastVersion' => $lastVersionBaseCalFat]);
 
         return json_decode(json_encode($dados), true);
