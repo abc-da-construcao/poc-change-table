@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+//------------------------------------------------------------------------------
+//ERP
+//------------------------------------------------------------------------------
 use App\Http\Controllers\ERP\PedidoController;
 use App\Http\Controllers\ERP\ProdutoController;
 use App\Http\Controllers\ERP\EstoqueController;
@@ -14,31 +17,35 @@ use App\Http\Controllers\ERP\VendasScadController;
 use App\Http\Controllers\ERP\ItensFaturadoController;
 use App\Http\Controllers\ERP\FiliaisController;
 use App\Http\Controllers\ERP\PrecosController;
+//------------------------------------------------------------------------------
+//PLATAFORMA
+//------------------------------------------------------------------------------
+use App\Http\Controllers\Plataforma\FiliaisController as FilialPlataforma;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/tracking-pedido', [PedidoController::class, 'index']);
-Route::get('/tracking-estoque', [EstoqueController::class, 'estoque']);
-Route::get('/tracking-produto', [ProdutoController::class, 'produto']);
-Route::get('/tracking-basecalfat', [BaseCalFatController::class, 'basecalfat']);
-Route::get('/tracking-itens-pedido-venda', [ItensPedidoVendaController::class, 'itensPedido']);
-Route::get('/tracking-itens-pedido-compra', [ItensPedidoCompraController::class, 'itensPedido']);
-Route::get('/tracking-notas-fiscais-saida', [NotasFiscaisSaidaController::class, 'notasFiscais']);
-Route::get('/tracking-classe', [ClasseProdutoController::class, 'classe']);
-Route::get('/tracking-fornecedor', [FornecedorController::class, 'fornecedor']);
-Route::get('/tracking-vendas-s-cad', [VendasScadController::class, 'vendas']);
-Route::get('/tracking-itens-faturado', [ItensFaturadoController::class, 'itensFaturado']);
-Route::get('/tracking-filiais', [FiliaisController::class, 'filiais']);
-Route::get('/tracking-precos', [PrecosController::class, 'precos']);
+//------------------------------------------------------------------------------
+//ERP
+//------------------------------------------------------------------------------
+$router->group(['prefix' => 'erp'], function () use ($router) {
+    $router->get('/tracking-pedido', [PedidoController::class, 'index']);
+    $router->get('/tracking-estoque', [EstoqueController::class, 'estoque']);
+    $router->get('/tracking-produto', [ProdutoController::class, 'produto']);
+    $router->get('/tracking-basecalfat', [BaseCalFatController::class, 'basecalfat']);
+    $router->get('/tracking-itens-pedido-venda', [ItensPedidoVendaController::class, 'itensPedido']);
+    $router->get('/tracking-itens-pedido-compra', [ItensPedidoCompraController::class, 'itensPedido']);
+    $router->get('/tracking-notas-fiscais-saida', [NotasFiscaisSaidaController::class, 'notasFiscais']);
+    $router->get('/tracking-classe', [ClasseProdutoController::class, 'classe']);
+    $router->get('/tracking-fornecedor', [FornecedorController::class, 'fornecedor']);
+    $router->get('/tracking-vendas-s-cad', [VendasScadController::class, 'vendas']);
+    $router->get('/tracking-itens-faturado', [ItensFaturadoController::class, 'itensFaturado']);
+    $router->get('/tracking-filiais', [FiliaisController::class, 'filiais']);
+    $router->get('/tracking-precos', [PrecosController::class, 'precos']);
+});
+//------------------------------------------------------------------------------
+//PLATAFORMA
+//------------------------------------------------------------------------------
+$router->group(['prefix' => 'plataforma'], function () use ($router) {
+    $router->get('/tracking-filiais', [FilialPlataforma::class, 'filiais']);
+});
 
 Route::get('/', function () {
     return view('welcome');
