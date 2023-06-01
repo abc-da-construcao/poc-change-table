@@ -59,6 +59,20 @@ return new class extends Migration {
                         $table->double('perc_icms_compra')->nullable(true);
                         $table->double('aliq_icms_compra')->nullable(true);
                         $table->double('icms_sem_despesas_nao_inclusas')->nullable(true);
+
+                        $table->string('api_produtos_codpro')->nullable(true);
+                        $table->string('api_produtos_referencia')->nullable(true);
+                        $table->string('api_produtos_modelo')->nullable(true);
+                        $table->string('api_produtos_nome_original')->nullable(true);
+                        $table->string('api_produtos_venda_minima')->nullable(true);
+                        $table->string('api_produtos_descricao_amigavel')->nullable(true);
+                        $table->string('api_produtos_nome_web')->nullable(true);
+                        $table->string('ap_produtos_descricao_longa')->nullable(true);
+                        $table->string('api_produtos_embalagem')->nullable(true);
+                        $table->string('api_produtos_tags')->nullable(true);
+                        $table->string('api_produtos_obs')->nullable(true);
+                        $table->string('api_produtos_video')->nullable(true);
+
                         $table->string('last_operation', 1);
                         $table->dateTime('last_commit_time');
                         $table->timestamp('created_at')->useCurrent();
@@ -66,6 +80,7 @@ return new class extends Migration {
                         //unique
                         $table->unique(['codpro', 'dv', 'id_fornecedor', 'codigo_externo_pesquisa']);
                         $table->unique(['codpro', 'dv', 'id_fornecedor']);
+                        $table->unique(['api_produtos_codpro']);
                     });
     }
 
