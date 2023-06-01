@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ERP;
 
 use App\Models\Produto;
 use Illuminate\Support\Facades\DB;

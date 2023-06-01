@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\NotaFiscaisSaidaService;
-use App\Services\ItensNotaFiscalSaidaService;
-use App\Services\ChangeTrackingService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\NotaFiscaisSaidaService;
+use App\Services\ERP\ItensNotaFiscalSaidaService;
+use App\Services\ERP\ChangeTrackingService;
 
 class NotasFiscaisSaidaController extends Controller {
 

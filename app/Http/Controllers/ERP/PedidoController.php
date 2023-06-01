@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\PedidoService;
-use App\Services\ClienteService;
-use App\Services\EnderecoClienteService;
-use App\Services\ChangeTrackingService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\PedidoService;
+use App\Services\ERP\ClienteService;
+use App\Services\ERP\EnderecoClienteService;
+use App\Services\ERP\ChangeTrackingService;
 
 class PedidoController extends Controller {
 

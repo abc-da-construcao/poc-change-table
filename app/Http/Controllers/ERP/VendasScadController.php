@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\VendasScadService;
-use App\Services\ChangeTrackingService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\VendasScadService;
+use App\Services\ERP\ChangeTrackingService;
 
 class VendasScadController extends Controller {
 

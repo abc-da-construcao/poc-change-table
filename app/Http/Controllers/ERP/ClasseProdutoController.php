@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\ClasseProdutoService;
-use App\Services\ChangeTrackingService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\ClasseProdutoService;
+use App\Services\ERP\ChangeTrackingService;
 
 class ClasseProdutoController extends Controller {
 

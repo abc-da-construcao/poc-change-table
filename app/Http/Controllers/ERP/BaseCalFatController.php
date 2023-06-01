@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\BaseCalFatService;
-use App\Services\ChangeTrackingService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\BaseCalFatService;
+use App\Services\ERP\ChangeTrackingService;
 
 class BaseCalFatController extends Controller {
 

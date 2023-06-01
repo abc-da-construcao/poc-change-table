@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ERP;
 
 use App\Models\Filiais;
 use Illuminate\Support\Facades\DB;

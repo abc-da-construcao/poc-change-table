@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\EstoqueService;
-use App\Services\ChangeTrackingService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\EstoqueService;
+use App\Services\ERP\ChangeTrackingService;
 
 class EstoqueController extends Controller {
 

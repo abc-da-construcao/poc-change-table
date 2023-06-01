@@ -1,19 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PedidoController;
-use App\Http\Controllers\ProdutoController;
-use App\Http\Controllers\EstoqueController;
-use App\Http\Controllers\BaseCalFatController;
-use App\Http\Controllers\ItensPedidoVendaController;
-use App\Http\Controllers\ItensPedidoCompraController;
-use App\Http\Controllers\NotasFiscaisSaidaController;
-use App\Http\Controllers\ClasseProdutoController;
-use App\Http\Controllers\FornecedorController;
-use App\Http\Controllers\VendasScadController;
-use App\Http\Controllers\ItensFaturadoController;
-use App\Http\Controllers\FiliaisController;
-use App\Http\Controllers\PrecosController;
+use App\Http\Controllers\ERP\PedidoController;
+use App\Http\Controllers\ERP\ProdutoController;
+use App\Http\Controllers\ERP\EstoqueController;
+use App\Http\Controllers\ERP\BaseCalFatController;
+use App\Http\Controllers\ERP\ItensPedidoVendaController;
+use App\Http\Controllers\ERP\ItensPedidoCompraController;
+use App\Http\Controllers\ERP\NotasFiscaisSaidaController;
+use App\Http\Controllers\ERP\ClasseProdutoController;
+use App\Http\Controllers\ERP\FornecedorController;
+use App\Http\Controllers\ERP\VendasScadController;
+use App\Http\Controllers\ERP\ItensFaturadoController;
+use App\Http\Controllers\ERP\FiliaisController;
+use App\Http\Controllers\ERP\PrecosController;
 
 /*
 |--------------------------------------------------------------------------

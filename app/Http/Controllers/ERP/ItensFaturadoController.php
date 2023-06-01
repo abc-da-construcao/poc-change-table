@@ -1,32 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
-use App\Services\ChangeTrackingService;
-use App\Services\FiliaisService;
+use App\Http\Controllers\Controller;
+use App\Services\ERP\ItensFaturadoService;
+use App\Services\ERP\ChangeTrackingService;
 
-class FiliaisController extends Controller {
+class ItensFaturadoController extends Controller {
 
-    public function filiais() {
+    public function itensFaturado() {
         try {
             //Busco na tabela de configurações a ultima versão que utilizamos
-            $lastVersion = ChangeTrackingService::getLastVersionControle(FiliaisService::NOME_CONFIGURACOES);
+            $lastVersion = ChangeTrackingService::getLastVersionControle(ItensFaturadoService::NOME_CONFIGURACOES);
 
             //Busco a última versão do change tracking do SQL Server
             $updateVersion = ChangeTrackingService::getLastVersionTrackingTable();
 
             //busco as ultimas alteraçẽos no ERP
-            $vendasScadERP = FiliaisService::getLastChagingTrackingERP($lastVersion);
+            $vendasScadERP = ItensFaturadoService::getLastChagingTrackingERP($lastVersion);
 
             $chunks = array_chunk($vendasScadERP, 500);
 
             foreach ($chunks as $chunk) {
                 //add/update na tabela "espelho"
-                FiliaisService::flushFiliais($chunk);
+                ItensFaturadoService::flushItensVendasScad($chunk);
             }
 
             /* atualiza na tabela de configurações */
-            ChangeTrackingService::updateLastTrackingTable($updateVersion,FiliaisService::NOME_CONFIGURACOES);
+            ChangeTrackingService::updateLastTrackingTable($updateVersion, ItensFaturadoService::NOME_CONFIGURACOES);
 
             dump('Last Execution: ' . (new \DateTime())->format('Y-m-d H:i:s'));
         } catch (\Exception $e) {
