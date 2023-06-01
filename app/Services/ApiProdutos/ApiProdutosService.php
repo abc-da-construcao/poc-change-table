@@ -13,7 +13,7 @@ class ApiProdutosService {
 
         $dados = DB::connection('mysql_api_produtos')->select(
                 "SELECT
-                    pd.codpro as 'api_produtos_codpro',
+                    pd.codpro,
                     pd.referencia as 'api_produtos_referencia',
                     pd.modelo as 'api_produtos_modelo',
                     pd.nome_original as 'api_produtos_nome_original',
@@ -26,7 +26,7 @@ class ApiProdutosService {
                     pd.obs as 'api_produtos_obs',
                     substring(pd.url_video, 0, 254) as 'api_produtos_video'
                 FROM
-                    api_produtos.produtos pd
+                    produtos pd
                 WHERE pd.updated_at >= :timeStamp",
                 ['timeStamp' => $timeStamp]);
         return json_decode(json_encode($dados), true);
@@ -37,9 +37,9 @@ class ApiProdutosService {
      */
     public static function flushProdutosApiProdutos($dados) {
 
-        Produto::upsert($dados, ['api_produtos_codpro'],
+        Produto::upsert($dados, ['codpro'],
                 [
-                    'api_produtos_codpro',
+                    'codpro',
                     'api_produtos_referencia',
                     'api_produtos_modelo',
                     'api_produtos_nome_original',
@@ -51,7 +51,6 @@ class ApiProdutosService {
                     'api_produtos_tags',
                     'api_produtos_obs',
                     'api_produtos_video'
-
                 ]);
     }
 
