@@ -1,6 +1,6 @@
 -- busca classes de produtos que sofreram alterações na tabela CLASSIFCAD
 SELECT
-    cc.clasprod,
+    ct.clasprod,
     cc.descr,
     cc.anal,
     cc.sainalista,

@@ -46,7 +46,7 @@ class ClasseProdutoService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        cc.clasprod,
+                        ct.clasprod,
                         cc.descr,
                         cc.anal,
                         cc.sainalista,
