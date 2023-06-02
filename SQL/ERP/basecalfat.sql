@@ -1,6 +1,6 @@
 -- busca produtos que sofreram alterações na tabela PRODUTOCAD
 SELECT
-    bc.ID AS 'id_basecalfat',
+    ct.ID AS 'id_basecalfat',
     bc.codpro AS 'codpro',
     bc.basecont AS 'base_cont',
     bc.basencont AS 'bas_en_cont',
