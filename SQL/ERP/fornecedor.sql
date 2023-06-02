@@ -1,6 +1,6 @@
 -- busca fornecedores que sofreram alterações na tabela PESSOA
 SELECT
-    i.OID AS 'oid',
+    ct.OID AS 'oid',
     i.RESCOPO AS 'rescopo',
     i.NOME AS 'nome',
     p.RAZAOSOCIAL AS 'razao_social',

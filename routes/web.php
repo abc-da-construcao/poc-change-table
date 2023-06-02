@@ -21,10 +21,11 @@ use App\Http\Controllers\ERP\PrecosController;
 //PLATAFORMA
 //------------------------------------------------------------------------------
 use App\Http\Controllers\Plataforma\FiliaisController as FilialPlataforma;
+use App\Http\Controllers\Plataforma\EnderecoClienteController;
 //------------------------------------------------------------------------------
-//PLATAFORMA
+//API PRODUTOS
 //------------------------------------------------------------------------------
-use App\Http\Controllers\ApiProdutos\ApiProdutoController as ApiProdutos;
+use App\Http\Controllers\ApiProdutos\ApiProdutoController;
 
 //------------------------------------------------------------------------------
 //ERP
@@ -49,12 +50,13 @@ $router->group(['prefix' => 'erp'], function () use ($router) {
 //------------------------------------------------------------------------------
 $router->group(['prefix' => 'plataforma'], function () use ($router) {
     $router->get('/tracking-filiais', [FilialPlataforma::class, 'filiais']);
+    $router->get('/tracking-endereco-clientes', [EnderecoClienteController::class, 'enderecos']);
 });
 //------------------------------------------------------------------------------
 //API PRODUTOS
 //------------------------------------------------------------------------------
 $router->group(['prefix' => 'apiProdutos'], function () use ($router) {
-    $router->get('/tracking-apiProdutos', [ApiProdutos::class, 'apiProdutos']);
+    $router->get('/tracking-apiProdutos', [ApiProdutoController::class, 'apiProdutos']);
 });
 
 Route::get('/', function () {

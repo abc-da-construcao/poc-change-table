@@ -42,7 +42,7 @@ class FornecedorService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        i.OID AS 'oid',
+                        ct.OID AS 'oid',
                         i.RESCOPO AS 'rescopo',
                         i.NOME AS 'nome',
                         p.RAZAOSOCIAL AS 'razao_social',
