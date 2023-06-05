@@ -22,6 +22,7 @@ use App\Http\Controllers\ERP\PrecosController;
 //------------------------------------------------------------------------------
 use App\Http\Controllers\Plataforma\FiliaisController as FilialPlataforma;
 use App\Http\Controllers\Plataforma\EnderecoClienteController;
+use App\Http\Controllers\Plataforma\ClientesController;
 //------------------------------------------------------------------------------
 //API PRODUTOS
 //------------------------------------------------------------------------------
@@ -51,6 +52,7 @@ $router->group(['prefix' => 'erp'], function () use ($router) {
 $router->group(['prefix' => 'plataforma'], function () use ($router) {
     $router->get('/tracking-filiais', [FilialPlataforma::class, 'filiais']);
     $router->get('/tracking-endereco-clientes', [EnderecoClienteController::class, 'enderecos']);
+    $router->get('/tracking-clientes', [ClientesController::class, 'clientes']);
 });
 //------------------------------------------------------------------------------
 //API PRODUTOS

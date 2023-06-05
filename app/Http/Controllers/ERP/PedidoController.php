@@ -27,7 +27,7 @@ class PedidoController extends Controller {
             $enderecoCliente = [];
             foreach ($chunks as $chunk) {
                 foreach ($chunk as $key => $value) {
-                    $clientes[$key] = [
+                    $clientes[] = [
                         'cpf_cnpj' => $value['cpf_cnpj'],
                         'nome' => $value['nome_cliente'],
                         'razao_social' => $value['razaocli'],
@@ -36,7 +36,7 @@ class PedidoController extends Controller {
                         'celular' => $value['telecli'],
                     ];
 
-                    $enderecoCliente[$key] = [
+                    $enderecoCliente[] = [
                         'cpf_cnpj' => $value['cpf_cnpj'],
                         'logradouro' => $value['endercli'],
                         'numero' => $value['NumClie'],
