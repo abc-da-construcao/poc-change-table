@@ -77,6 +77,24 @@ return new class extends Migration {
                         $table->string('api_produtos_obs',254)->nullable(true);
                         $table->string('api_produtos_video',254)->nullable(true);
                         //------------------------------------------------------------------
+                        //API PRODUTOS: IMAGENS
+                        //------------------------------------------------------------------
+                        $table->string('img_1',254)->nullable(true);
+                        $table->string('img_2',254)->nullable(true);
+                        $table->string('img_3',254)->nullable(true);
+                        $table->string('img_4',254)->nullable(true);
+                        $table->string('img_5',254)->nullable(true);
+                        $table->string('img_6',254)->nullable(true);
+                        $table->string('img_7',254)->nullable(true);
+                        $table->string('img_8',254)->nullable(true);
+                        $table->string('img_9',254)->nullable(true);
+                        $table->string('img_10',254)->nullable(true);
+                        $table->string('img_11',254)->nullable(true);
+                        $table->string('img_12',254)->nullable(true);
+                        $table->string('img_13',254)->nullable(true);
+                        $table->string('img_14',254)->nullable(true);
+                        $table->string('img_15',254)->nullable(true);
+                        //------------------------------------------------------------------
                         $table->string('last_operation', 1)->nullable(true);
                         $table->dateTime('last_commit_time')->nullable(true);
                         $table->timestamp('created_at')->useCurrent();
@@ -85,6 +103,7 @@ return new class extends Migration {
                         $table->unique(['codpro', 'dv', 'id_fornecedor', 'codigo_externo_pesquisa']);
                         $table->unique(['codpro', 'dv', 'id_fornecedor']);
                         $table->unique(['codpro']);
+                        $table->unique(['referencia']);
                     });
     }
 
