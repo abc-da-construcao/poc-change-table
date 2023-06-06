@@ -27,6 +27,7 @@ use App\Http\Controllers\Plataforma\EnderecoClienteController;
 //------------------------------------------------------------------------------
 use App\Http\Controllers\ApiProdutos\ApiProdutoController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoImagemController;
+use App\Http\Controllers\ApiProdutos\ApiProdutoAtributosController;
 
 //------------------------------------------------------------------------------
 //ERP
@@ -59,6 +60,7 @@ $router->group(['prefix' => 'plataforma'], function () use ($router) {
 $router->group(['prefix' => 'apiProdutos'], function () use ($router) {
     $router->get('/tracking-apiProdutos', [ApiProdutoController::class, 'apiProdutos']);
     $router->get('/tracking-apiProdutosImagem', [ApiProdutoImagemController::class, 'apiProdutosImagem']);
+    $router->get('/tracking-apiProdutosAtributos', [ApiProdutoAtributosController::class, 'apiProdutosAtributos']);
 });
 
 Route::get('/', function () {
