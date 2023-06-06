@@ -41,5 +41,5 @@ SELECT
     FROM filiais f 
         LEFT JOIN filiais_complemento fc ON f.id = fc.filial_id  
         LEFT JOIN filiais_endereco fe ON f.id = fe.filial_id  
-    WHERE f.updated_at >= :timeStamp
+    WHERE  ((f.updated_at IS NOT NULL and f.updated_at >= :timeStamp) OR (f.created_at >= :timeStampD))
         AND f.oid is not null
