@@ -24,6 +24,7 @@ use App\Http\Controllers\Plataforma\FiliaisController as FilialPlataforma;
 use App\Http\Controllers\Plataforma\EnderecoClienteController;
 use App\Http\Controllers\Plataforma\ClientesController;
 use App\Http\Controllers\Plataforma\ItensPedidoVendaController as ItensPedidosPlataforma;
+use App\Http\Controllers\Plataforma\PedidosController as PedidosPlataforma;
 //------------------------------------------------------------------------------
 //API PRODUTOS
 //------------------------------------------------------------------------------
@@ -57,6 +58,7 @@ $router->group(['prefix' => 'plataforma'], function () use ($router) {
     $router->get('/tracking-endereco-clientes', [EnderecoClienteController::class, 'enderecos']);
     $router->get('/tracking-clientes', [ClientesController::class, 'clientes']);
     $router->get('/tracking-itens-pedido-venda', [ItensPedidosPlataforma::class, 'itens']);
+    $router->get('/tracking-pedidos', [PedidosPlataforma::class, 'pedidos']);
 });
 //------------------------------------------------------------------------------
 //API PRODUTOS
