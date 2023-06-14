@@ -12,7 +12,7 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('pagamentos', function (Blueprint $table) {
+        Schema::create('plataforma_pagamentos', function (Blueprint $table) {
             $table->id();
             // ------------------------------------------
             // PLATAFORMA
@@ -89,6 +89,6 @@ return new class extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('pagamentos');
+        Schema::dropIfExists('plataforma_pagamentos');
     }
 };
