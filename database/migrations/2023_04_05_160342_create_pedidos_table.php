@@ -212,6 +212,19 @@ return new class extends Migration {
             $table->decimal('plataforma_valorDescontoCupom', 10,2)->nullable(true);
             $table->string('plataforma_tipoCupom', 70)->nullable(true);
             $table->string('plataforma_tipoValidacaoCupom', 80)->nullable(true);
+            //------------------------------------------------------------------
+            //ESPECIFICADORES VINCULAR PEDIDO
+            //------------------------------------------------------------------
+            $table->string('idEspecificadorMdm', 20)->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO especificador MDM');
+            $table->string('especificador_vinc_ped_idPedidoMdm', 100)->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO pedido_id');
+            $table->integer('especificador_vinc_ped_id')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO id');
+            $table->integer('especificador_vinc_ped_orcamento_id')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO orcamento_id');
+            $table->integer('especificador_vinc_ped_pedido_mu')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO pedido_mu');
+            $table->integer('especificador_vinc_ped_especificador_id')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO especificador_id');
+            $table->integer('especificador_vinc_ped_filial_id')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO filial_id');
+            $table->string('especificador_vinc_ped_status', 80)->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO status');
+            $table->timestamp('especificador_vinc_ped_created_at')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO created_at');
+            $table->timestamp('especificador_vinc_ped_updated_at')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO updated_at');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
