@@ -16,6 +16,6 @@ class Pagamentos extends Model {
      *
      * @var string
      */
-    protected $table = 'plataforma_pagamentos';
+    protected $table = 'pagamentos';
 
 }
