@@ -34,6 +34,7 @@ use App\Http\Controllers\Plataforma\EspecificadoresVincularPedidoController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoImagemController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoAtributosController;
+use App\Http\Controllers\ApiProdutos\ApiProdutoEstoqueIndustriaController;
 
 //------------------------------------------------------------------------------
 //ERP
@@ -73,6 +74,7 @@ $router->group(['prefix' => 'apiProdutos'], function () use ($router) {
     $router->get('/tracking-apiProdutos', [ApiProdutoController::class, 'apiProdutos']);
     $router->get('/tracking-apiProdutosImagem', [ApiProdutoImagemController::class, 'apiProdutosImagem']);
     $router->get('/tracking-apiProdutosAtributos', [ApiProdutoAtributosController::class, 'apiProdutosAtributos']);
+    $router->get('/tracking-apiProdutosEstoquesIndustria', [ApiProdutoEstoqueIndustriaController::class, 'apiProdutoEstoqueIndustria']);
 });
 
 Route::get('/', function () {
