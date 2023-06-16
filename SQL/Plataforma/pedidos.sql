@@ -64,13 +64,13 @@ SELECT
     cp.desconto as 'plataforma_valorDescontoCupom',
     tc.nome as 'plataforma_tipoCupom',
     tvc.nome as 'plataforma_tipoValidacaoCupom'
-FROM digitala_vendas.pedidos p
-    LEFT JOIN digitala_vendas.clientes c ON p.cliente_id = c.id 
-    LEFT JOIN digitala_vendas.status s ON s.id = p.status 
-    LEFT JOIN digitala_vendas.users ufp ON p.users_id = ufp.id 
-    LEFT JOIN digitala_vendas.filiais fp ON ufp.filial_id = fp.id 
-    LEFT JOIN digitala_vendas.filiais_vinculos fv ON fv.users_user = ufp.`user`
-    LEFT JOIN digitala_vendas.filiais fo ON fo.id = fv.filial_id
+FROM pedidos p
+    LEFT JOIN clientes c ON p.cliente_id = c.id 
+    LEFT JOIN status s ON s.id = p.status 
+    LEFT JOIN users ufp ON p.users_id = ufp.id 
+    LEFT JOIN filiais fp ON ufp.filial_id = fp.id 
+    LEFT JOIN filiais_vinculos fv ON fv.users_user = ufp.`user`
+    LEFT JOIN filiais fo ON fo.id = fv.filial_id
     LEFT JOIN area_venda av ON av.id = fp.are_venda_id 
     LEFT JOIN cupom cp ON cp.id = p.cupom_id
     LEFT JOIN tipo_cupom  tc ON tc.id = cp.tipo_cupom_id
