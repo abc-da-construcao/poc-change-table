@@ -2,7 +2,7 @@
 
 namespace App\Services\Plataforma;
 
-use App\Models\Filiais;
+use App\Models\Orcamentos;
 use Illuminate\Support\Facades\DB;
 
 class OrcamentoService {
@@ -12,7 +12,7 @@ class OrcamentoService {
     public static function getDadosPlataforma($timeStamp) {
 
         $dados = DB::connection('mysql_plataforma')->select(
-                "select  
+                "SELECT  
                         CONCAT(orc.id, '-plataforma') as 'orcamento_id',
                         CONCAT(orc.id, '-plataforma') as 'idOrcamentoMdm',
                         REPLACE(REPLACE(REPLACE(TRIM(c.documento), '.', ''), '-', ''), '/', '') as 'idClienteMdm',
@@ -79,21 +79,71 @@ class OrcamentoService {
                 LEFT JOIN cupom cp ON cp.id = orc.cupom_id
                 LEFT JOIN tipo_cupom  tc ON tc.id = cp.tipo_cupom_id
                 LEFT JOIN tipo_validacao_cupom tvc ON tvc.id = cp.tipo_validacao_cupom_id
-                WHERE ((orc.updated_at is not null and orc.updated_at >= :timeStamp) or (orc.created_at >= :timeStampD));
-
-
-
-", ['timeStamp' => $timeStamp, 'timeStampD' => $timeStamp]);
+                WHERE ((orc.updated_at is not null and orc.updated_at >= :timeStamp) or (orc.created_at >= :timeStampD))", ['timeStamp' => $timeStamp, 'timeStampD' => $timeStamp]);
         return json_decode(json_encode($dados), true);
     }
 
     /**
      * inserir/update os dados 
      */
-    public static function flushFiliais($dados) {
+    public static function flush($dados) {
 
-        Filiais::upsert($dados, ['oid'],
+        Orcamentos::upsert($dados, ['orcamento_id'],
                 [
+                    'orcamento_id',
+                    'idOrcamentoMdm',
+                    'idClienteMdm',
+                    'idLeadMdm',
+                    'IdClientePlataforma',
+                    'CLIENTE',
+                    'Documento',
+                    'email',
+                    'telefone',
+                    'celular',
+                    'inscricao',
+                    'contribuinte_icms',
+                    'tipoPedido',
+                    'IdUserCadPedidoPlataforma',
+                    'idfilialCatPedido',
+                    'nomeFilialPedido',
+                    'idFilialPedidoMU',
+                    'NomeUserFilialPedido',
+                    'NomeOrigUserFilialPedido',
+                    'idPlataformaUserFilialPedido',
+                    'idMuUserFilialPedido',
+                    'idCatFilialOrigem',
+                    'nomeFilialOrigemPedido',
+                    'idFilialOrigemMU',
+                    'nomeAv',
+                    'canal_venda_id',
+                    'descAv',
+                    'codigoAv',
+                    'cupom_id',
+                    'tipo_cupom_id',
+                    'nomeCupom',
+                    'qtdCupom',
+                    'cupomFreteGratis',
+                    'valorDescontoCupom',
+                    'tipoCupom',
+                    'tipoValidacaoCupom',
+                    'clientes_id',
+                    'oid_cliente',
+                    'oid_endereco',
+                    'oid_classificacao',
+                    'destinatario',
+                    'cep',
+                    'endereco',
+                    'numero',
+                    'complemento',
+                    'bairro',
+                    'cidade',
+                    'estado',
+                    'referencia',
+                    'tipo',
+                    'principal',
+                    'mesmo',
+                    'oid_cidade',
+                    'oid_estado'
         ]);
     }
 

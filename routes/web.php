@@ -28,6 +28,7 @@ use App\Http\Controllers\Plataforma\PagamentoController;
 use App\Http\Controllers\Plataforma\PedidosController as PedidosPlataforma;
 use App\Http\Controllers\Plataforma\EspecificadoresController;
 use App\Http\Controllers\Plataforma\EspecificadoresVincularPedidoController;
+use App\Http\Controllers\Plataforma\OrcamentosController;
 //------------------------------------------------------------------------------
 //API PRODUTOS
 //------------------------------------------------------------------------------
@@ -66,6 +67,7 @@ $router->group(['prefix' => 'plataforma'], function () use ($router) {
     $router->get('/tracking-pedidos', [PedidosPlataforma::class, 'pedidos']);
     $router->get('/tracking-especificadores', [EspecificadoresController::class, 'index']);
     $router->get('/tracking-especificadores-vincular-pedido', [EspecificadoresVincularPedidoController::class, 'index']);
+    $router->get('/tracking-orcamento', [OrcamentosController::class, 'index']);
 });
 //------------------------------------------------------------------------------
 //API PRODUTOS
