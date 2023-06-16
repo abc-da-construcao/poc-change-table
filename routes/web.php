@@ -24,6 +24,7 @@ use App\Http\Controllers\Plataforma\FiliaisController as FilialPlataforma;
 use App\Http\Controllers\Plataforma\EnderecoClienteController;
 use App\Http\Controllers\Plataforma\ClientesController;
 use App\Http\Controllers\Plataforma\ItensPedidoVendaController as ItensPedidosPlataforma;
+use App\Http\Controllers\Plataforma\PagamentoController;
 use App\Http\Controllers\Plataforma\PedidosController as PedidosPlataforma;
 use App\Http\Controllers\Plataforma\EspecificadoresController;
 use App\Http\Controllers\Plataforma\EspecificadoresVincularPedidoController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\Plataforma\EspecificadoresVincularPedidoController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoImagemController;
 use App\Http\Controllers\ApiProdutos\ApiProdutoAtributosController;
+use App\Http\Controllers\ApiProdutos\ApiProdutoEstoqueIndustriaController;
 
 //------------------------------------------------------------------------------
 //ERP
@@ -60,6 +62,7 @@ $router->group(['prefix' => 'plataforma'], function () use ($router) {
     $router->get('/tracking-endereco-clientes', [EnderecoClienteController::class, 'enderecos']);
     $router->get('/tracking-clientes', [ClientesController::class, 'clientes']);
     $router->get('/tracking-itens-pedido-venda', [ItensPedidosPlataforma::class, 'itens']);
+    $router->get('/tracking-pagamento', [PagamentoController::class, 'pagamentos']);
     $router->get('/tracking-pedidos', [PedidosPlataforma::class, 'pedidos']);
     $router->get('/tracking-especificadores', [EspecificadoresController::class, 'index']);
     $router->get('/tracking-especificadores-vincular-pedido', [EspecificadoresVincularPedidoController::class, 'index']);
@@ -71,6 +74,7 @@ $router->group(['prefix' => 'apiProdutos'], function () use ($router) {
     $router->get('/tracking-apiProdutos', [ApiProdutoController::class, 'apiProdutos']);
     $router->get('/tracking-apiProdutosImagem', [ApiProdutoImagemController::class, 'apiProdutosImagem']);
     $router->get('/tracking-apiProdutosAtributos', [ApiProdutoAtributosController::class, 'apiProdutosAtributos']);
+    $router->get('/tracking-apiProdutosEstoquesIndustria', [ApiProdutoEstoqueIndustriaController::class, 'apiProdutoEstoqueIndustria']);
 });
 
 Route::get('/', function () {
