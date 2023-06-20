@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->integer('pd_orçamento_id')->nullable(true);
             $table->integer('plataforma_pd_pedidos_mu')->nullable(true);
             $table->decimal('plataforma_pd_total_pedido',10,2)->nullable(true);
+            $table->string('idLeadMdm',150)->nullable(true);
             // ------------TABELA PAGAMENTO LOJA --------------------------
             $table->integer('plataforma_pglj_id')->nullable(true);
             $table->integer('pglj_orcamento_id')->nullable(true);
