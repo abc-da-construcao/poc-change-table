@@ -10,17 +10,18 @@ class PedidosController extends Controller {
 
     public function pedidos() {
         try {
-            
+
             //Busco na tabela de configurações a ultima versão que utilizamos
             $lastVersion = TimestampService::getTimeStampByConfiguracao(PedidosService::NOME_CONFIGURACOES);
 
             //Busco a última versão do timeStamp do banco
             $updateVersion = TimestampService::getTimeStampBanco();
 
-            
+
             //busco as ultimas alteraçẽos na plataforma
-            $filiaisPlataforma = PedidosService::getDadosPlataforma($lastVersion);
-            $chunks = array_chunk($filiaisPlataforma, 500);
+            $pedidosPlataforma = PedidosService::getDadosPedidoPlataforma($lastVersion);
+            // dd($pedidosPlataforma);
+            $chunks = array_chunk($pedidosPlataforma, 500);
 
             foreach ($chunks as $chunk) {
                 //add/update na tabela "espelho"

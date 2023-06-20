@@ -141,10 +141,8 @@ return new class extends Migration {
             $table->string('ENDERECOFATURA', 1)->nullable(true);
             $table->double('CONTRATO')->nullable(true);
             $table->double('EMPENHO')->nullable(true);
-
             $table->string('last_operation', 1)->nullable(true);
             $table->dateTime('last_commit_time')->nullable(true);
-
             //------------------------------------------------------------------
             //PLATAFORMA
             //------------------------------------------------------------------
@@ -225,7 +223,33 @@ return new class extends Migration {
             $table->string('especificador_vinc_ped_status', 80)->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO status');
             $table->timestamp('especificador_vinc_ped_created_at')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO created_at');
             $table->timestamp('especificador_vinc_ped_updated_at')->nullable(true)->comment('ESPECIFICADOR_VINCULAR_PEDIDO updated_at');
-
+            //------------------------------------------------------------------
+            //COMPLEMENTO ENDERECO PEDIDO | PLATAFORMA
+            //------------------------------------------------------------------
+            $table->integer('plataforma_end_id')->nullable(true);
+            $table->integer('plataforma_end_clientes_id')->nullable(true);
+            $table->integer('plataforma_end_oid_cliente')->nullable(true);
+            $table->integer('plataforma_end_oid_endereco')->nullable(true);
+            $table->integer('plataforma_end_oid_classificacao')->nullable(true);
+            $table->string('plataforma_end_destinatario',255)->nullable(true);
+            $table->string('plataforma_end_cep',9)->nullable(true);
+            $table->text('plataforma_end_endereco')->nullable(true);
+            $table->string('plataforma_end_numero',20)->nullable(true);
+            $table->string('plataforma_end_complemento',255)->nullable(true);
+            $table->string('plataforma_end_bairro',70)->nullable(true);
+            $table->string('plataforma_end_cidade',100)->nullable(true);
+            $table->string('plataforma_end_estado',2)->nullable(true);
+            $table->string('plataforma_end_referencia',100)->nullable(true);
+            $table->string('plataforma_end_tipo',20)->nullable(true);
+            $table->integer('plataforma_end_principal')->nullable(true);
+            $table->tinyInteger('plataforma_end_mesmo')->nullable(true);
+            $table->string('plataforma_end_oid_cidade',10)->nullable(true);
+            $table->string('plataforma_end_oid_estado',10)->nullable(true);
+            $table->string('plataforma_end_created_at')->nullable(true);
+            $table->string('plataforma_end_updated_at')->nullable(true);
+            //------------------------------------------------------------------
+            // DEFAULT PEDIDO
+            //------------------------------------------------------------------
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
