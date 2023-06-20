@@ -19,9 +19,9 @@ return new class extends Migration {
             // ------------TABELA PEDIDOS----------------------------------
             $table->string('plataforma_id_pedido_mdm',254)->nullable(true);
             $table->string('plataforma_id_cliente_mdm',254)->nullable(true);
-            $table->integer('pd_orçamento_id')->nullable(true);
+            $table->integer('pd_orçamento_id');
+            $table->string('orcamento_id',30);
             $table->integer('plataforma_pd_pedidos_mu')->nullable(true);
-            $table->decimal('plataforma_pd_total_pedido',10,2)->nullable(true);
             $table->string('idLeadMdm',150)->nullable(true);
             // ------------TABELA PAGAMENTO LOJA --------------------------
             $table->integer('plataforma_pglj_id')->nullable(true);
@@ -32,7 +32,7 @@ return new class extends Migration {
             $table->integer('plataforma_pglj_entrada')->nullable(true);
             $table->string('plataforma_pglj_variavel',45)->nullable(true);
             $table->string('plataforma_pglj_tipo',45)->nullable(true);
-            $table->string('plataforma_pglj_nome_tipo',45)->nullable(true);
+            $table->string('plataforma_pglj_nome_tipo',55)->nullable(true);
             $table->decimal('plataforma_pglj_valor',10,2)->nullable(true);
             $table->integer('plataforma_pglj_edit_data')->nullable(true);
             $table->integer('plataforma_pglj_cartao')->nullable(true);
@@ -70,7 +70,7 @@ return new class extends Migration {
             $table->integer('plataforma_tpdoc_id')->nullable(true);
             $table->integer('plataforma_tpdoc_oid_forma_pagamento')->nullable(true);
             $table->integer('plataforma_tpdoc_oid_tipo_documento')->nullable(true);
-            $table->string('plataforma_tpdoc_nome',45)->nullable(true);
+            $table->string('plataforma_tpdoc_nome',55)->nullable(true);
             $table->integer('plataforma_tpdoc_entrada')->nullable(true);
             $table->timestamp('plataforma_tpdoc_created_at')->nullable(true);
             // ------------TABELA PEDIDOS---------------------------------------
@@ -80,7 +80,7 @@ return new class extends Migration {
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             //unique
-            $table->unique(['pd_orçamento_id', 'pglj_orcamento_id']);
+            $table->unique(['orcamento_id']);
         });
     }
 

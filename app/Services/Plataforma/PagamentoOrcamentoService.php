@@ -16,8 +16,12 @@ class PagamentoOrcamentoService {
                         CONCAT(o.id, '-plataforma') as 'plataforma_id_pedido_mdm',
                         REPLACE(REPLACE(REPLACE(TRIM(c.documento), '.', ''), '-', ''), '/', '') as 'plataforma_id_cliente_mdm',
                         o.id as 'pd_orçamento_id',
-                        o.pedidos_mu as 'plataforma_pd_pedidos_mu',
-                        o.total  as 'plataforma_pd_total_pedido', 
+                        CASE
+                            WHEN pglj.id is null and pgfnc.id is not null THEN CONCAT(o.id,'-financiamento-',pgfnc.id )
+                             WHEN pglj.id is not null and pgfnc.id is null then CONCAT(o.id,'-loja-',pglj.id )
+                            ELSE o.id
+                        end as 'orcamento_id',
+                        NULL as 'plataforma_pd_pedidos_mu',
                         CONCAT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE((UPPER(REPLACE(TRIM(c.nome), ' ', ''))), 'Á','A'), 'À','A'), 'Ã','A'), 'Â','A'), 'É','E'), 'È','E'), 'Ê','E'), 'Í','I'), 'Ì','I'), 'Î','I'), 'Ó','O'), 'Ò','O'), 'Ô','O'), 'Õ','O'), 'Ú','U'), 'Ù','U'), 'Û','U'), 'Ü','U'), 'Ç','C'), REPLACE(REPLACE(REPLACE(REPLACE(IFNULL(IFNULL(c.celular, c.telefone), c.email), '(', ''), ')', ''), '-', ''), ' ', '') )  as 'idLeadMdm',
                         pglj.id as 'plataforma_pglj_id',
                         pglj.orcamento_id as 'pglj_orcamento_id',
@@ -72,7 +76,7 @@ class PagamentoOrcamentoService {
                 LEFT JOIN clientes c on c.id = o.cliente_id 
                 LEFT JOIN pagamento_loja pglj ON pglj.orcamento_id = o.id
                 LEFT JOIN pagamento_financiamento pgfnc ON pgfnc.orcamento_id = o.id
-                LEFT JOIN tipo_documento tpdoc ON tpdoc.oid_tipo_documento = pgfnc.oid_entrada
+                LEFT JOIN tipo_documento tpdoc ON tpdoc.oid_tipo_documento = pglj.tipo_id
                 WHERE ((o.updated_at IS NOT NULL and o.updated_at >= :timeStamp) OR (o.created_at >= :timeStamptTwo))", ['timeStamp' => $timeStamp, 'timeStamptTwo' => $timeStamp]);
         return json_decode(json_encode($dados), true);
     }
@@ -82,13 +86,13 @@ class PagamentoOrcamentoService {
      */
     public static function flush($dados) {
 
-        Pagamentos::upsert($dados, ['pd_orçamento_id', 'pglj_orcamento_id'],
+        Pagamentos::upsert($dados, ['pd_orçamento_id'],
                 [
                     'plataforma_id_pedido_mdm',
                     'plataforma_id_cliente_mdm',
                     'pd_orçamento_id',
+                    'orcamento_id',
                     'plataforma_pd_pedidos_mu',
-                    'plataforma_pd_total_pedido',
                     'idLeadMdm',
                     'plataforma_pglj_id',
                     'pglj_orcamento_id',
