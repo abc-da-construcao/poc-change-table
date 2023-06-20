@@ -124,6 +124,7 @@ class PedidosService {
 
         Pedidos::upsert($dados, ['pedido_id'],
                 [
+                    'pedido_id',
                     'plataforma_idPedidoMdm',
                     'plataforma_idClienteMdm',
                     'plataforma_IdClientePlataforma',

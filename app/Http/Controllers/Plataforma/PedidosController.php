@@ -20,7 +20,6 @@ class PedidosController extends Controller {
 
             //busco as ultimas alteraçẽos na plataforma
             $pedidosPlataforma = PedidosService::getDadosPedidoPlataforma($lastVersion);
-            // dd($pedidosPlataforma);
             $chunks = array_chunk($pedidosPlataforma, 500);
 
             foreach ($chunks as $chunk) {
