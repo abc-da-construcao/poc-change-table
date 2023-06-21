@@ -9,21 +9,21 @@ class PedidosService {
 
     const NOME_CONFIGURACOES = 'timestamp_plataforma_pedidos';
 
-    public static function getDadosPlataforma($timeStamp) {
+    public static function getDadosPedidoPlataforma($timeStamp) {
 
         $dados = DB::connection('mysql_plataforma')->select(
-                "SELECT  
+                "SELECT
                     CONCAT(p.orçamento_id, '-plataforma') as 'pedido_id',
                     CONCAT(p.orçamento_id, '-plataforma') as 'plataforma_idPedidoMdm',
                     REPLACE(REPLACE(REPLACE(TRIM(c.documento), '.', ''), '-', ''), '/', '') as 'plataforma_idClienteMdm',
-                    p.cliente_id as 'plataforma_IdClientePlataforma', 
-                    UPPER(c.nome) as 'plataforma_CLIENTE', 
+                    p.cliente_id as 'plataforma_IdClientePlataforma',
+                    UPPER(c.nome) as 'plataforma_CLIENTE',
                     REPLACE(REPLACE(REPLACE(TRIM(c.documento), '.', ''), '-', ''), '/', '') as plataforma_Documento,
-                    c.email as plataforma_email, 
-                    c.telefone as plataforma_telefone, 
-                    c.celular as plataforma_celular, 
-                    c.inscricao as plataforma_inscricao, 
-                    c.contribuinte_icms as plataforma_contribuinte_icms,  
+                    c.email as plataforma_email,
+                    c.telefone as plataforma_telefone,
+                    c.celular as plataforma_celular,
+                    c.inscricao as plataforma_inscricao,
+                    c.contribuinte_icms as plataforma_contribuinte_icms,
                     p.orçamento_id as plataforma_orçamento_id,
                     p.frete_id as plataforma_frete_id,
                     p.tipo_cartao as plataforma_tipo_cartao,
@@ -42,28 +42,28 @@ class PedidosService {
                     p.info_adicionais as plataforma_info_adicionais,
                     p.area_venda_id as plataforma_area_venda_id,
                     p.created_at as plataforma_created_at,
-                    p.updated_at as plataforma_updated_at,		
-                    p.valor as 'plataforma_valorPedido', 
-                    p.status as 'plataforma_codStatus', 
-                    s.status as 'plataforma_statusPedido', 
-                    p.id as 'plataforma_idPedidoPlataforma', 
-                    IFNULL(p.valor_frete, 0) as 'plataforma_valor_frete' , 
-                    p.desconto as plataforma_desconto, 
-                    p.valor_carrinho_sem_desconto as plataforma_valor_carrinho_sem_desconto, 
-                    p.valor_total_pedido as plataforma_valor_total_pedido, 
-                    p.qtd_parcelas as plataforma_qtd_parcelas, 
-                    IFNULL(p.extra, 0) as 'plataforma_extra', 
+                    p.updated_at as plataforma_updated_at,
+                    p.valor as 'plataforma_valorPedido',
+                    p.status as 'plataforma_codStatus',
+                    s.status as 'plataforma_statusPedido',
+                    p.id as 'plataforma_idPedidoPlataforma',
+                    IFNULL(p.valor_frete, 0) as 'plataforma_valor_frete' ,
+                    p.desconto as plataforma_desconto,
+                    p.valor_carrinho_sem_desconto as plataforma_valor_carrinho_sem_desconto,
+                    p.valor_total_pedido as plataforma_valor_total_pedido,
+                    p.qtd_parcelas as plataforma_qtd_parcelas,
+                    IFNULL(p.extra, 0) as 'plataforma_extra',
                     p.valor - (IFNULL(p.extra, 0) + IFNULL(p.valor_frete,0)) as 'plataforma_ValorPontuacaoAbcx',
                     fv.tipo as 'plataforma_tipoPedido',
-                    p.users_id as 'plataforma_IdUserCadPedidoPlataforma',	
-                    ufp.filial_id as 'plataforma_idfilialCatPedido',				
+                    p.users_id as 'plataforma_IdUserCadPedidoPlataforma',
+                    ufp.filial_id as 'plataforma_idfilialCatPedido',
                     fp.nome as 'plataforma_nomeFilialPedido',
                     fp.filial as 'plataforma_idFilialPedidoMU',
-                    ufp.name as 'plataforma_NomeUserFilialPedido', 
+                    ufp.name as 'plataforma_NomeUserFilialPedido',
                     ufp.nome_original as 'plataforma_NomeOrigUserFilialPedido',
                     ufp.id as 'plataforma_idPlataformaUserFilialPedido',
                     ufp.`user` as 'plataforma_idMuUserFilialPedido',
-                    IFNULL(fv.filial_id, ufp.filial_id) as 'plataforma_idCatFilialOrigem', 
+                    IFNULL(fv.filial_id, ufp.filial_id) as 'plataforma_idCatFilialOrigem',
                     IFNULL(fo.nome, fp.nome)  as 'plataforma_nomeFilialOrigemPedido',
                     IFNULL(fo.filial, fp.filial) as 'plataforma_idFilialOrigemMU',
                     av.nome as 'plataforma_nomeAv',
@@ -77,29 +77,54 @@ class PedidosService {
                     cp.frete_gratis as 'plataforma_cupomFreteGratis',
                     cp.desconto as 'plataforma_valorDescontoCupom',
                     tc.nome as 'plataforma_tipoCupom',
-                    tvc.nome as 'plataforma_tipoValidacaoCupom'
+                    tvc.nome as 'plataforma_tipoValidacaoCupom',
+                    ende.id  as 'plataforma_end_id',
+                    ende.clientes_id as 'plataforma_end_clientes_id',
+                    ende.oid_cliente as 'plataforma_end_oid_cliente',
+                    ende.oid_endereco as 'plataforma_end_oid_endereco',
+                    ende.oid_classificacao as 'plataforma_end_oid_classificacao',
+                    ende.destinatario as 'plataforma_end_destinatario',
+                    ende.cep as 'plataforma_end_cep',
+                    ende.endereco as 'plataforma_end_endereco',
+                    ende.numero as 'plataforma_end_numero',
+                    ende.complemento as 'plataforma_end_complemento',
+                    ende.bairro as 'plataforma_end_bairro',
+                    ende.cidade as 'plataforma_end_cidade',
+                    ende.estado as 'plataforma_end_estado',
+                    ende.referencia as 'plataforma_end_referencia',
+                    ende.tipo as 'plataforma_end_tipo',
+                    ende.principal as 'plataforma_end_principal',
+                    ende.mesmo as 'plataforma_end_mesmo',
+                    ende.oid_cidade as 'plataforma_end_oid_cidade',
+                    ende.oid_estado as 'plataforma_end_oid_estado',
+                    ende.created_at as 'plataforma_end_created_at',
+                    ende.updated_at as 'plataforma_end_updated_at'
                 FROM pedidos p
-                    LEFT JOIN clientes c ON p.cliente_id = c.id 
-                    LEFT JOIN status s ON s.id = p.status 
-                    LEFT JOIN users ufp ON p.users_id = ufp.id 
-                    LEFT JOIN filiais fp ON ufp.filial_id = fp.id 
-                    LEFT JOIN filiais_vinculos fv ON fv.users_user = ufp.`user`
-                    LEFT JOIN filiais fo ON fo.id = fv.filial_id
-                    LEFT JOIN area_venda av ON av.id = fp.are_venda_id 
-                    LEFT JOIN cupom cp ON cp.id = p.cupom_id
-                    LEFT JOIN tipo_cupom  tc ON tc.id = cp.tipo_cupom_id
-                    LEFT JOIN tipo_validacao_cupom tvc ON tvc.id = cp.tipo_validacao_cupom_id
-                WHERE ((p.updated_at IS NOT NULL and p.updated_at >= :timeStamp) OR (p.created_at >= :timeStampD))", ['timeStamp' => $timeStamp, 'timeStampD' => $timeStamp]);
+                LEFT JOIN clientes c ON p.cliente_id = c.id
+                INNER JOIN enderecos ende ON ende.clientes_id = p.cliente_id AND ende.principal = 1 AND tipo IN ('ENTREGA', 'entrega')
+                LEFT JOIN status s ON s.id = p.status
+                LEFT JOIN users ufp ON p.users_id = ufp.id
+                LEFT JOIN filiais fp ON ufp.filial_id = fp.id
+                LEFT JOIN filiais_vinculos fv ON fv.users_user = ufp.`user`
+                LEFT JOIN filiais fo ON fo.id = fv.filial_id
+                LEFT JOIN area_venda av ON av.id = fp.are_venda_id
+                LEFT JOIN cupom cp ON cp.id = p.cupom_id
+                LEFT JOIN tipo_cupom  tc ON tc.id = cp.tipo_cupom_id
+                LEFT JOIN tipo_validacao_cupom tvc ON tvc.id = cp.tipo_validacao_cupom_id
+                WHERE ((p.updated_at IS NOT NULL and p.updated_at >= :timeStamp) OR (p.created_at >= :timeStampD))
+                ORDER BY p.orçamento_id",
+                ['timeStamp' => $timeStamp, 'timeStampD' => $timeStamp]);
         return json_decode(json_encode($dados), true);
     }
 
     /**
-     * inserir/update os dados 
+     * inserir/update os dados
      */
     public static function flush($dados) {
 
         Pedidos::upsert($dados, ['pedido_id'],
                 [
+                    'pedido_id',
                     'plataforma_idPedidoMdm',
                     'plataforma_idClienteMdm',
                     'plataforma_IdClientePlataforma',
@@ -164,6 +189,27 @@ class PedidosService {
                     'plataforma_valorDescontoCupom',
                     'plataforma_tipoCupom',
                     'plataforma_tipoValidacaoCupom',
+                    'plataforma_end_id',
+                    'plataforma_end_clientes_id',
+                    'plataforma_end_oid_cliente',
+                    'plataforma_end_oid_endereco',
+                    'plataforma_end_oid_classificacao',
+                    'plataforma_end_destinatario',
+                    'plataforma_end_cep',
+                    'plataforma_end_endereco',
+                    'plataforma_end_numero',
+                    'plataforma_end_complemento',
+                    'plataforma_end_bairro',
+                    'plataforma_end_cidade',
+                    'plataforma_end_estado',
+                    'plataforma_end_referencia',
+                    'plataforma_end_tipo',
+                    'plataforma_end_principal',
+                    'plataforma_end_mesmo',
+                    'plataforma_end_oid_cidade',
+                    'plataforma_end_oid_estado',
+                    'plataforma_end_created_at',
+                    'plataforma_end_updated_at'
         ]);
     }
 
