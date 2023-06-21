@@ -1,12 +1,14 @@
-/** ==================================================================================== */
-/** =================== CONTEXTO ===== PAGAMENTOS PLATAFORMA =========================== */
-/** ==================================================================================== */
 SELECT
     CONCAT(p.orçamento_id, '-plataforma') as 'plataforma_id_pedido_mdm',
     REPLACE(REPLACE(REPLACE(TRIM(c.documento), '.', ''), '-', ''), '/', '') as 'plataforma_id_cliente_mdm',
-    p.orçamento_id as 'pd_orçamento_id',
+    p.orçamento_id as 'pd_orcamento_id',
+    CASE
+        WHEN pglj.id is null and pgfnc.id is not null THEN CONCAT( p.orçamento_id,'-financiamento-',pgfnc.id )
+         WHEN pglj.id is not null and pgfnc.id is null then CONCAT( p.orçamento_id,'-loja-',pglj.id )
+       ELSE CONCAT(p.orçamento_id,'-pedido')
+    end as 'orcamento_id',
     p.pedidos_mu as 'plataforma_pd_pedidos_mu',
-    p.valor as 'plataforma_pd_total_pedido',
+    CONCAT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE((UPPER(REPLACE(TRIM(c.nome), ' ', ''))), 'Á','A'), 'À','A'), 'Ã','A'), 'Â','A'), 'É','E'), 'È','E'), 'Ê','E'), 'Í','I'), 'Ì','I'), 'Î','I'), 'Ó','O'), 'Ò','O'), 'Ô','O'), 'Õ','O'), 'Ú','U'), 'Ù','U'), 'Û','U'), 'Ü','U'), 'Ç','C'), REPLACE(REPLACE(REPLACE(REPLACE(IFNULL(IFNULL(c.celular, c.telefone), c.email), '(', ''), ')', ''), '-', ''), ' ', '') )  as 'idLeadMdm',
     pglj.id as 'plataforma_pglj_id',
     pglj.orcamento_id as 'pglj_orcamento_id',
     pglj.forma_id as 'plataforma_pglj_forma_id',
@@ -60,8 +62,6 @@ FROM pedidos p
 LEFT join clientes c ON c.id = p.cliente_id
 LEFT JOIN pagamento_loja as pglj ON pglj.orcamento_id = p.orçamento_id
 LEFT JOIN pagamento_financiamento as pgfnc ON pgfnc.orcamento_id = p.orçamento_id
-LEFT JOIN tipo_documento as tpdoc ON tpdoc.oid_tipo_documento = pgfnc.oid_entrada
-WHERE
-    ((p.updated_at IS NOT NULL and p.updated_at >= :timeStamp) OR (p.created_at >= :timeStamp))
-ORDER BY
-    p.id DESC;
+LEFT JOIN tipo_documento tpdoc ON tpdoc.oid_tipo_documento = pglj.tipo_id and pglj.forma_id = tpdoc.oid_forma_pagamento
+WHERE (pglj.id IS NOT NULL OR pgfnc.id IS NOT NULL)
+   and ((p.updated_at IS NOT NULL and p.updated_at >= :timeStamp) OR (p.created_at >= :timeStamptTwo))

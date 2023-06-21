@@ -19,7 +19,7 @@ return new class extends Migration {
             // ------------TABELA PEDIDOS----------------------------------
             $table->string('plataforma_id_pedido_mdm',254)->nullable(true);
             $table->string('plataforma_id_cliente_mdm',254)->nullable(true);
-            $table->integer('pd_orçamento_id');
+            $table->integer('pd_orcamento_id');
             $table->string('orcamento_id',30);
             $table->integer('plataforma_pd_pedidos_mu')->nullable(true);
             $table->string('idLeadMdm',150)->nullable(true);
