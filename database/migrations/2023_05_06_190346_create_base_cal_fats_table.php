@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->string('aliquota_produto',1)->nullable(true);
             $table->string('tpo',30)->nullable(true);
             $table->string('cfo',4)->nullable(true);
-            $table->integer('classificacao_ cliente')->nullable(true);
+            $table->integer('classificacao_cliente')->nullable(true);
             $table->string('tipo_Cliente',1)->nullable(true);;
             $table->integer('perc_base_despesas')->nullable(true);
             $table->string('cffoncont',4)->nullable(true);

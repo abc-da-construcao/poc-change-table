@@ -14,7 +14,7 @@ SELECT
     bc.aliquotaproduto AS 'aliquota_produto',
     bc.tpo AS 'tpo',
     bc.cfo AS 'cfo',
-    bc.Classificacaocliente AS 'classificacao_ cliente',
+    bc.Classificacaocliente AS 'classificacao_cliente',
     bc.TipoCliente AS 'tipo_Cliente',
     bc.PERCBASEDESPESAS AS 'perc_base_despesas',
     bc.CFONCONT AS 'cffoncont',
