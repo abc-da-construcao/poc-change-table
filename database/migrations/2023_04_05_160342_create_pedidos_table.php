@@ -156,7 +156,7 @@ return new class extends Migration {
             $table->string('plataforma_celular', 20)->nullable(true);
             $table->string('plataforma_inscricao', 20)->nullable(true);
             $table->smallInteger('plataforma_contribuinte_icms')->nullable(true);
-            $table->integer('plataforma_orçamento_id')->nullable(true);
+            $table->integer('plataforma_orcamento_id')->nullable(true);
             $table->integer('plataforma_frete_id')->nullable(true);
             $table->integer('plataforma_tipo_cartao')->nullable(true);
             $table->integer('plataforma_tipo_pagamento')->nullable(true);

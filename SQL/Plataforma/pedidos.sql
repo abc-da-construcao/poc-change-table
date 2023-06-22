@@ -10,7 +10,7 @@ SELECT
     c.celular as plataforma_celular,
     c.inscricao as plataforma_inscricao,
     c.contribuinte_icms as plataforma_contribuinte_icms,
-    p.orçamento_id as plataforma_orçamento_id,
+    p.orçamento_id as plataforma_orcamento_id,
     p.frete_id as plataforma_frete_id,
     p.tipo_cartao as plataforma_tipo_cartao,
     p.tipo_pagamento as plataforma_tipo_pagamento,
