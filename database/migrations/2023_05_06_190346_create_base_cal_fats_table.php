@@ -13,8 +13,8 @@ return new class extends Migration {
      */
     public function up() {
         Schema::create('base_cal_fats', function (Blueprint $table) {
-            $table->id()->unique();
-            $table->integer('id_basecalfat')->nullable(true);
+            $table->id();
+            $table->string('id_basecalfat', 25);
             $table->string('codpro',5)->nullable(true);
             $table->decimal('base_cont',10,4)->nullable(true);
             $table->decimal('bas_en_cont',10,4)->nullable(true);

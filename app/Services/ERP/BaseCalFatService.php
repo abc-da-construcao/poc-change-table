@@ -70,7 +70,7 @@ class BaseCalFatService {
 
         $dados = DB::connection('sqlsrv_ERP')->select(
                     "SELECT
-                        ct.ID AS 'id_basecalfat',
+                        CONCAT(CONCAT(CONCAT(trim(bc.CF), trim(bc.estadoorigem)), trim(bc.estadodestino)), trim(bc.tpo)) AS 'id_basecalfat',
                         bc.codpro AS 'codpro',
                         bc.basecont AS 'base_cont',
                         bc.basencont AS 'bas_en_cont',
@@ -115,7 +115,10 @@ class BaseCalFatService {
                         COALESCE(tc.commit_time, GETDATE())  AS 'last_commit_time'
                     FROM CHANGETABLE (CHANGES [BASECALFAT], :lastVersion) AS ct
                     LEFT JOIN sys.dm_tran_commit_table tc on ct.sys_change_version = tc.commit_ts
-                    LEFT JOIN BASECALFAT bc on bc.ID = ct.ID"
+                    LEFT JOIN BASECALFAT bc on bc.ID = ct.ID
+                    WHERE bc.id IS NOT NULL
+                    AND bc.tpo IS NOT NULL
+                    AND bc.tpo <> ' '"
                     ,['lastVersion' => $lastVersionBaseCalFat]);
 
         return json_decode(json_encode($dados), true);
