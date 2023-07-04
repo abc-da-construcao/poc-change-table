@@ -59,4 +59,4 @@ SELECT
 FROM orcamentos o 
     INNER JOIN carrinho_orcamento co ON co.orcamento_id = o.id
     INNER JOIN ambientes a ON a .id = co.ambientes_id
-WHERE ((o.updated_at is not null and o.updated_at >= :timeStamp) or (o.created_at >= :timeStampD))
+WHERE o.id IN (:orcamentos_id)
