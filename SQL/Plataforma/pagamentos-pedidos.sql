@@ -64,4 +64,4 @@ LEFT JOIN pagamento_loja as pglj ON pglj.orcamento_id = p.orçamento_id
 LEFT JOIN pagamento_financiamento as pgfnc ON pgfnc.orcamento_id = p.orçamento_id
 LEFT JOIN tipo_documento tpdoc ON tpdoc.oid_tipo_documento = pglj.tipo_id and pglj.forma_id = tpdoc.oid_forma_pagamento
 WHERE (pglj.id IS NOT NULL OR pgfnc.id IS NOT NULL)
-   and ((p.updated_at IS NOT NULL and p.updated_at >= :timeStamp) OR (p.created_at >= :timeStamptTwo))
+   and p.orçamento_id IN (:orcamentos_id)
