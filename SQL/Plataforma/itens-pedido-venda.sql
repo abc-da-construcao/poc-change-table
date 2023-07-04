@@ -31,4 +31,4 @@ SELECT  pp.id as 'idItemPedidoPvMdm',
 FROM pedidos_produtos pp 
         LEFT JOIN produtos p ON p.id = pp.produtoid
         LEFT JOIN ambientes a ON a.id = pp.ambientes_id
-WHERE ((pp.updated_at IS NOT NULL and pp.updated_at >= :timeStamp) OR (pp.created_at >= :timeStampD))
+WHERE pp.orcamento_id IN (:orcamentos_id)
