@@ -1,4 +1,5 @@
 SELECT  
+        orc.id as 'plataforma_orcamento_id',
         CONCAT(orc.id, '-plataforma') as 'orcamento_id',
         CONCAT(orc.id, '-plataforma') as 'idOrcamentoMdm',
         REPLACE(REPLACE(REPLACE(TRIM(c.documento), '.', ''), '-', ''), '/', '') as 'idClienteMdm',
